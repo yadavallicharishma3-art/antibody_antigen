@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antibody–Antigen Interaction Analyzer V2 | Computational Structural Biology</title>
+  <meta name="description" content="Computational structural biology interface for antibody–antigen interface analysis, 5 Å contact graph extraction, and CNN cognate-pair classification reproducing Zhang et al. 2024.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Top Navigation Header -->
+    <header class="app-navbar" role="banner">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <div class="brand-logo" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="6" r="3"></circle>
+              <circle cx="18" cy="6" r="3"></circle>
+              <circle cx="12" cy="18" r="3"></circle>
+              <line x1="8.5" y1="7.5" x2="15.5" y2="7.5"></line>
+              <line x1="7.5" y1="8.5" x2="10.5" y2="15.5"></line>
+              <line x1="16.5" y1="8.5" x2="13.5" y2="15.5"></line>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <div class="brand-title-row">
+              <span class="brand-title">ANTIBODY–ANTIGEN INTERACTION ANALYZER</span>
+              <span class="brand-version-badge">V2</span>
+            </div>
+            <span class="brand-subtitle">Computational Structural Biology &bull; Zhang et al. 2024</span>
+          </div>
+        </div>
+
+        <div class="nav-indicators">
+          <div class="nav-spec-badge">
+            <span class="spec-dot"></span>
+            <span>CNN / Structural Analysis</span>
+          </div>
+          <div class="nav-spec-badge tool-badge">
+            <span>Research Tool</span>
+          </div>
+          <div id="backend-status" class="status-pill status-checking" title="Backend Connection State">
+            <span class="status-pulse-dot" aria-hidden="true"></span>
+            <span id="backend-status-text">Checking backend...</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Application Canvas -->
+    <main class="main-wrapper" id="main-content">
+      
+      <!-- HERO & ANALYSIS CONTROLLER -->
+      <section class="analysis-hero-card" aria-labelledby="hero-heading">
+        <div class="hero-header">
+          <div class="hero-title-group">
+            <span class="hero-eyebrow">Structural Biology Inference</span>
+            <h1 id="hero-heading" class="hero-title">Structural Interaction Analysis</h1>
+            <p class="hero-description">
+              Analyze antibody–antigen interfaces from experimentally resolved protein structures. Resolves PDB coordinates, identifies antibody chains, maps IMGT CDR loops, calculates 5&nbsp;&Aring; intermolecular contacts, and computes cognate-pair CNN classification.
+            </p>
+          </div>
+        </div>
+
+        <!-- Search Bar and Action Controls -->
+        <form id="analysis-form" class="analysis-controller" onsubmit="return false;">
+          <div class="search-field-container">
+            <label for="pdb-input" class="search-label">
+              <span>PROTEIN DATA BANK IDENTIFIER</span>
+              <span class="search-format-hint">4-character PDB accession code</span>
+            </label>
+            <div class="search-input-wrapper">
+              <div class="input-icon-prefix" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="pdb-input"
+                name="pdb_id"
+                class="pdb-text-input"
+                placeholder="e.g. 1EJO"
+                maxlength="4"
+                autocomplete="off"
+                spellcheck="false"
+                required
+                aria-describedby="input-error"
+              />
+              <button type="submit" id="analyze-btn" class="analyze-action-btn">
+                <span class="btn-content">
+                  <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  <span class="btn-text">Analyze Structure</span>
+                </span>
+                <span class="btn-loader-spinner" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div id="input-error" class="input-validation-alert" role="alert" style="display: none;"></div>
+          </div>
+
+          <!-- Quick Example Selector Chips -->
+          <div class="example-benchmarks-row">
+            <span class="benchmarks-caption">Example structures:</span>
+            <div class="chips-flex">
+              <button type="button" class="benchmark-chip" data-pdb="1EJO" title="Load complex 1EJO (Fab 13B5 / HIV-1 p24)">
+                <span class="chip-code">1EJO</span>
+                <span class="chip-desc">Fab 13B5 / HIV-1 p24</span>
+              </button>
+              <button type="button" class="benchmark-chip" data-pdb="1KC5" title="Load complex 1KC5 (Fab HyHEL-10 / Lysozyme)">
+                <span class="chip-code">1KC5</span>
+                <span class="chip-desc">Fab HyHEL-10 / Lysozyme</span>
+              </button>
+              <button type="button" class="benchmark-chip" data-pdb="1A14" title="Load complex 1A14 (Fab 26-10 / Digoxin Held-Out)">
+                <span class="chip-code">1A14</span>
+                <span class="chip-desc">Fab 26-10 / Unseen</span>
+              </button>
+              <button type="button" class="benchmark-chip" data-pdb="1DQJ" title="Load complex 1DQJ (Fab HyHEL-63 / Lysozyme)">
+                <span class="chip-code">1DQJ</span>
+                <span class="chip-desc">Fab HyHEL-63 / Lysozyme</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- PRE-ANALYSIS STATE: SCIENTIFIC PIPELINE OVERVIEW -->
+      <section id="pre-analysis-panel" class="intro-pipeline-card" aria-label="Pre-analysis Pipeline Introduction">
+        <div class="panel-header-compact">
+          <div class="panel-badge-pill">
+            <span class="pulse-indicator"></span>
+            <span>Ready for Structural Analysis</span>
+          </div>
+          <h2 class="panel-heading">Computational Structural Pipeline</h2>
+          <p class="panel-subheading">
+            The automated pipeline transforms raw atomic 3D coordinates into a topological intramolecular contact representation for deep CNN inference.
+          </p>
+        </div>
+
+        <div class="pipeline-schematic-grid">
+          <div class="pipeline-node-card">
+            <div class="node-step-index">01</div>
+            <div class="node-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
+              </svg>
+            </div>
+            <h3 class="node-title">PDB Structure</h3>
+            <p class="node-text">Resolves 3D atomic coordinates from local cache or RCSB PDB coordinate archives.</p>
+          </div>
+
+          <div class="pipeline-node-connector" aria-hidden="true">&rarr;</div>
+
+          <div class="pipeline-node-card">
+            <div class="node-step-index">02</div>
+            <div class="node-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <h3 class="node-title">Chain Identification</h3>
+            <p class="node-text">Identifies antibody Heavy (H), Light (L), and protein Antigen (Ag) polymer chains.</p>
+          </div>
+
+          <div class="pipeline-node-connector" aria-hidden="true">&rarr;</div>
+
+          <div class="pipeline-node-card">
+            <div class="node-step-index">03</div>
+            <div class="node-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+            </div>
+            <h3 class="node-title">CDR Mapping</h3>
+            <p class="node-text">Delineates canonical IMGT Complementarity Determining Regions (H1–H3, L1–L3).</p>
+          </div>
+
+          <div class="pipeline-node-connector" aria-hidden="true">&rarr;</div>
+
+          <div class="pipeline-node-card">
+            <div class="node-step-index">04</div>
+            <div class="node-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="16" y2="16"></line>
+              </svg>
+            </div>
+            <h3 class="node-title">5 &Aring; Contact Graph</h3>
+            <p class="node-text">Calculates intermolecular heavy-atom distances (&le; 5.0 &Aring;) to extract interface residues.</p>
+          </div>
+
+          <div class="pipeline-node-connector" aria-hidden="true">&rarr;</div>
+
+          <div class="pipeline-node-card">
+            <div class="node-step-index">05</div>
+            <div class="node-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="3" y1="15" x2="21" y2="15"></line>
+                <line x1="9" y1="3" x2="9" y2="21"></line>
+                <line x1="15" y1="3" x2="15" y2="21"></line>
+              </svg>
+            </div>
+            <h3 class="node-title">20&times;20 Matrix</h3>
+            <p class="node-text">Builds normalized intramolecular contact frequency representation in standard amino-acid order.</p>
+          </div>
+
+          <div class="pipeline-node-connector" aria-hidden="true">&rarr;</div>
+
+          <div class="pipeline-node-card">
+            <div class="node-step-index">06</div>
+            <div class="node-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <h3 class="node-title">CNN Classification</h3>
+            <p class="node-text">Processes 20&times;21 tensor via trained CNN (199,681 parameters) to score cognate pairing.</p>
+          </div>
+        </div>
+
+        <div class="pipeline-footer-info">
+          <div class="info-tag">
+            <span class="info-bullet">&bull;</span>
+            <span><strong>Scientific Reproducibility:</strong> Exact methodology of Zhang et al., <em>BioSystems</em> 243:105264 (2024).</span>
+          </div>
+          <div class="info-tag">
+            <span class="info-bullet">&bull;</span>
+            <span><strong>Input Support:</strong> Standard PDB format with antibody Heavy/Light chains and protein antigen chains.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROGRESS & LOADING STATE PANEL -->
+      <section id="loading-panel" class="loading-workflow-card" style="display: none;" aria-live="polite">
+        <div class="loading-headline-block">
+          <div class="loading-radar-ring">
+            <div class="radar-core"></div>
+          </div>
+          <div class="loading-titles">
+            <h3 class="loading-main-title">Executing Structural Analysis</h3>
+            <p class="loading-sub-title">Running automated computational pipeline for <span id="loading-pdb-target" class="loading-pdb-code">----</span></p>
+          </div>
+        </div>
+
+        <div class="progress-track-wrapper">
+          <div class="progress-bar-fill" id="loading-progress-bar"></div>
+        </div>
+
+        <div class="staged-steps-list">
+          <div class="stage-step" id="stage-step-1">
+            <span class="stage-icon">✓</span>
+            <div class="stage-info">
+              <span class="stage-name">Loading PDB structure</span>
+              <span class="stage-desc">Retrieving atomic coordinates from repository</span>
+            </div>
+          </div>
+          <div class="stage-step" id="stage-step-2">
+            <span class="stage-icon">✓</span>
+            <div class="stage-info">
+              <span class="stage-name">Identifying antibody / antigen chains</span>
+              <span class="stage-desc">Decomposing complex into Heavy, Light, and Antigen polymers</span>
+            </div>
+          </div>
+          <div class="stage-step" id="stage-step-3">
+            <span class="stage-icon">→</span>
+            <div class="stage-info">
+              <span class="stage-name">Mapping CDR regions</span>
+              <span class="stage-desc">Delineating IMGT hypervariable loops (H1–H3, L1–L3)</span>
+            </div>
+          </div>
+          <div class="stage-step" id="stage-step-4">
+            <span class="stage-icon">○</span>
+            <div class="stage-info">
+              <span class="stage-name">Extracting 5 &Aring; contacts</span>
+              <span class="stage-desc">Graph distance evaluation on side-chain heavy atoms</span>
+            </div>
+          </div>
+          <div class="stage-step" id="stage-step-5">
+            <span class="stage-icon">○</span>
+            <div class="stage-info">
+              <span class="stage-name">Building interaction representation</span>
+              <span class="stage-desc">Constructing 20&times;20 normalized intramolecular contact chart</span>
+            </div>
+          </div>
+          <div class="stage-step" id="stage-step-6">
+            <span class="stage-icon">○</span>
+            <div class="stage-info">
+              <span class="stage-name">Running CNN inference</span>
+              <span class="stage-desc">Evaluating 20&times;21&times;1 tensor through serialized CNN</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ERROR STATE CARD -->
+      <section id="error-card" class="error-feedback-card" style="display: none;" role="alert">
+        <div class="error-layout">
+          <div class="error-badge-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <div class="error-content-body">
+            <div class="error-title-row">
+              <h3 id="error-title" class="error-header-text">Structural Analysis Error</h3>
+              <span id="error-type" class="error-type-tag">Error: IncompatibleStructure</span>
+            </div>
+            <p id="error-detail" class="error-detail-message"></p>
+            <div class="error-action-row">
+              <button type="button" id="error-dismiss-btn" class="error-btn-action">
+                <span>Try Another Structure</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DYNAMIC RESULTS DASHBOARD -->
+      <div id="results-container" class="results-dashboard-wrapper" style="display: none;">
+
+        <!-- Dashboard Section Quick Nav -->
+        <nav class="dashboard-section-nav" aria-label="Dashboard sections">
+          <a href="#section-overview" class="dash-nav-pill active">Overview</a>
+          <a href="#section-structure" class="dash-nav-pill">Structure &amp; CDRs</a>
+          <a href="#section-matrix" class="dash-nav-pill">Interaction Matrix</a>
+          <a href="#section-pipeline" class="dash-nav-pill">Pipeline Timeline</a>
+          <a href="#section-model" class="dash-nav-pill">CNN Architecture</a>
+          <a href="#section-limitations" class="dash-nav-pill">Limitations</a>
+        </nav>
+
+        <!-- 1. PRIMARY RESULT & MODEL CLASSIFICATION CARD -->
+        <section id="section-overview" class="result-card primary-classification-card">
+          <div class="card-eyebrow-row">
+            <div class="structure-accession-meta">
+              <span class="meta-tag-label">STRUCTURE ANALYZED</span>
+              <span id="res-pdb-id" class="pdb-accession-display">----</span>
+            </div>
+            <div class="task-paradigm-pill">
+              <span>Task: Test-3 Cognate-vs-Mismatched Pairing</span>
+            </div>
+          </div>
+
+          <div class="classification-core-grid">
+            <!-- Left: Predicted Class & Probability Gauge -->
+            <div class="classification-primary-block">
+              <div class="classification-label-sub">MODEL CLASSIFICATION</div>
+              <div id="res-prediction-badge" class="prediction-classification-badge">
+                ----
+              </div>
+
+              <!-- Metric Probability Display -->
+              <div class="probability-metric-group">
+                <div class="metric-top-row">
+                  <span class="metric-descriptor">Model probability</span>
+                  <span id="res-probability" class="metric-highlight-value">--.--%</span>
+                </div>
+                <!-- Clean Probability Gauge Bar -->
+                <div class="probability-gauge-track" title="Model probability on [0.0, 1.0] scale with 0.50 threshold">
+                  <div class="gauge-threshold-marker" style="left: 50%;" title="Decision Threshold (0.50)">
+                    <span class="threshold-label">0.50</span>
+                  </div>
+                  <div id="res-probability-fill" class="gauge-fill-bar" style="width: 50%;"></div>
+                </div>
+                <div class="gauge-scale-legend">
+                  <span>0.00 (Mismatched)</span>
+                  <span class="scale-mid">Threshold: 0.50</span>
+                  <span>1.00 (Cognate)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Scientific Interpretation Notice Box -->
+            <div class="classification-context-box">
+              <div class="context-box-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>Task Interpretation &amp; Calibration Notice</span>
+              </div>
+              <p id="res-interpretation-text" class="context-box-body">
+                Model prediction interpretation will appear here.
+              </p>
+              <div class="context-caveat-note">
+                <strong>Important:</strong> The model probability reflects relative similarity to native crystal pairing distributions in Test 3; it is <em>NOT</em> an experimental binding affinity ($K_D$ / $\Delta G$) nor a physical binding chance.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. STRUCTURE OVERVIEW & CDR ANALYSIS (TWO PANELS) -->
+        <div id="section-structure" class="dashboard-two-column-row">
+          
+          <!-- Panel A: Structure & Macromolecular Entities -->
+          <section class="result-card structure-overview-card">
+            <div class="card-title-bar">
+              <div class="title-with-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+                <h3 class="panel-section-title">Structure &amp; Macromolecular Chains</h3>
+              </div>
+              <span class="panel-tag">Polymer Topology</span>
+            </div>
+
+            <!-- Chains Breakdown -->
+            <div class="chains-entity-inventory">
+              <div class="chain-entity-cell">
+                <span class="entity-role-label">Heavy Chain(s)</span>
+                <span id="res-heavy-chains" class="entity-chain-badge">None</span>
+              </div>
+              <div class="chain-entity-cell">
+                <span class="entity-role-label">Light Chain(s)</span>
+                <span id="res-light-chains" class="entity-chain-badge">None</span>
+              </div>
+              <div class="chain-entity-cell">
+                <span class="entity-role-label">Antigen Chain(s)</span>
+                <span id="res-antigen-chains" class="entity-chain-badge">None</span>
+              </div>
+            </div>
+
+            <!-- 5 Å Contacts & Interface Statistics -->
+            <div class="stats-overview-subpanel">
+              <h4 class="subpanel-header">5 &Aring; Contact &amp; Interface Metrics</h4>
+              <div class="stats-card-grid">
+                <div class="stat-metric-tile">
+                  <span class="tile-caption">Contacts</span>
+                  <span id="res-inter-contacts" class="tile-number">0</span>
+                  <span class="tile-subtext">&le; 5.0 &Aring; heavy atoms</span>
+                </div>
+                <div class="stat-metric-tile">
+                  <span class="tile-caption">Antibody Interface</span>
+                  <span id="res-ab-interface" class="tile-number">0</span>
+                  <span class="tile-subtext">Residues in contact</span>
+                </div>
+                <div class="stat-metric-tile">
+                  <span class="tile-caption">CDR Interface</span>
+                  <span id="res-cdr-interface" class="tile-number">0</span>
+                  <span class="tile-subtext">Subset in CDR loops</span>
+                </div>
+                <div class="stat-metric-tile">
+                  <span class="tile-caption">Antigen Interface</span>
+                  <span id="res-ag-interface" class="tile-number">0</span>
+                  <span class="tile-subtext">Epitope residues</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Panel B: IMGT CDR Analysis -->
+          <section class="result-card cdr-analysis-card">
+            <div class="card-title-bar">
+              <div class="title-with-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+                <h3 class="panel-section-title">CDR Analysis (IMGT Definition)</h3>
+              </div>
+              <span class="panel-tag">Hypervariable Loops</span>
+            </div>
+
+            <!-- Heavy Chain CDRs -->
+            <div class="cdr-chain-group">
+              <div class="cdr-group-title">
+                <span>Heavy Chain CDR Loops</span>
+              </div>
+              <div class="cdr-chips-row">
+                <div class="cdr-loop-pill">
+                  <span class="loop-name">H1</span>
+                  <span class="loop-count-wrap">
+                    <strong id="res-cdr-h1" class="loop-count">0</strong>
+                    <span class="loop-unit">residues</span>
+                  </span>
+                </div>
+                <div class="cdr-loop-pill">
+                  <span class="loop-name">H2</span>
+                  <span class="loop-count-wrap">
+                    <strong id="res-cdr-h2" class="loop-count">0</strong>
+                    <span class="loop-unit">residues</span>
+                  </span>
+                </div>
+                <div class="cdr-loop-pill">
+                  <span class="loop-name">H3</span>
+                  <span class="loop-count-wrap">
+                    <strong id="res-cdr-h3" class="loop-count">0</strong>
+                    <span class="loop-unit">residues</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Light Chain CDRs -->
+            <div class="cdr-chain-group">
+              <div class="cdr-group-title">
+                <span>Light Chain CDR Loops</span>
+              </div>
+              <div class="cdr-chips-row">
+                <div class="cdr-loop-pill">
+                  <span class="loop-name">L1</span>
+                  <span class="loop-count-wrap">
+                    <strong id="res-cdr-l1" class="loop-count">0</strong>
+                    <span class="loop-unit">residues</span>
+                  </span>
+                </div>
+                <div class="cdr-loop-pill">
+                  <span class="loop-name">L2</span>
+                  <span class="loop-count-wrap">
+                    <strong id="res-cdr-l2" class="loop-count">0</strong>
+                    <span class="loop-unit">residues</span>
+                  </span>
+                </div>
+                <div class="cdr-loop-pill">
+                  <span class="loop-name">L3</span>
+                  <span class="loop-count-wrap">
+                    <strong id="res-cdr-l3" class="loop-count">0</strong>
+                    <span class="loop-unit">residues</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cdr-methodology-note">
+              <span>IMGT unique numbering scheme maps canonical CDR loops H1 (27–38), H2 (56–65), H3 (105–117), L1 (27–38), L2 (56–65), L3 (105–117).</span>
+            </div>
+          </section>
+        </div>
+
+        <!-- 3. INTERACTION MATRIX — MAJOR SCIENTIFIC VISUAL -->
+        <section id="section-matrix" class="result-card interaction-matrix-card">
+          <div class="card-title-bar">
+            <div>
+              <div class="title-with-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="3" y1="9" x2="21" y2="9"></line>
+                  <line x1="3" y1="15" x2="21" y2="15"></line>
+                  <line x1="9" y1="3" x2="9" y2="21"></line>
+                  <line x1="15" y1="3" x2="15" y2="21"></line>
+                </svg>
+                <h3 class="panel-section-title">20&times;20 Interaction Matrix</h3>
+              </div>
+              <p class="matrix-card-desc">
+                Normalized intramolecular amino-acid pair frequencies among interface residues. 
+                Columns represent antibody interface residues; rows represent antigen interface residues.
+              </p>
+            </div>
+            <div class="matrix-specs-pills">
+              <span id="res-canonical-shape" class="matrix-spec-chip">Shape: [20, 20]</span>
+              <span id="res-cnn-shape" class="matrix-spec-chip">CNN Tensor: [20, 21, 1]</span>
+              <span id="res-nonzero-count" class="matrix-spec-chip">Nonzero Cells: --</span>
+            </div>
+          </div>
+
+          <!-- Amino Acid Standard Order Banner -->
+          <div class="amino-acid-order-bar">
+            <span class="aa-order-label">Amino Acid Order (20):</span>
+            <code class="aa-order-string">A R N D C Q E G H I L K M F P S T W Y V</code>
+          </div>
+
+          <!-- Matrix Canvas Visualization Layout -->
+          <div class="matrix-visual-workspace">
+            <div class="matrix-axis-header">
+              <span class="axis-direction-text">&uarr; ANTIGEN RESIDUES &nbsp;&bull;&nbsp; ANTIBODY RESIDUES &rarr;</span>
+            </div>
+
+            <div class="matrix-canvas-frame">
+              <canvas id="matrix-canvas" width="520" height="520" class="scientific-heatmap-canvas" aria-label="20 by 20 interaction matrix heatmap"></canvas>
+              <div id="matrix-tooltip" class="matrix-floating-tooltip" style="display: none;" role="tooltip"></div>
+            </div>
+
+            <!-- Heatmap Colormap Scientific Legend -->
+            <div class="matrix-legend-container">
+              <div class="legend-scale-row">
+                <span class="legend-scale-bound">0.0 (No contact)</span>
+                <div class="legend-gradient-bar" aria-hidden="true"></div>
+                <span class="legend-scale-bound">1.0 (Max normalized frequency)</span>
+              </div>
+              <div class="legend-caption">Sequential cyan colormap: #07111F (zero) &rarr; #083344 &rarr; #06B6D4 &rarr; #FFFFFF (peak)</div>
+            </div>
+          </div>
+
+          <!-- SHA256 Fingerprint Row -->
+          <div class="representation-integrity-row">
+            <div class="integrity-label-group">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              <span class="integrity-caption">Representation SHA-256:</span>
+            </div>
+            <code id="res-sha256" class="integrity-hash-code">----------------------------------------------------------------</code>
+            <button type="button" id="copy-hash-btn" class="copy-hash-button" title="Copy representation SHA256 hash">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span id="copy-hash-label">Copy</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 4. PIPELINE EXECUTION SUMMARY TIMELINE -->
+        <section id="section-pipeline" class="result-card pipeline-summary-card">
+          <div class="card-title-bar">
+            <div class="title-with-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <h3 class="panel-section-title">Structural Pipeline Execution Timeline</h3>
+            </div>
+            <span class="panel-tag">Executed Sequence</span>
+          </div>
+
+          <div class="timeline-stepper">
+            <div class="timeline-step-item completed">
+              <div class="timeline-step-marker">1</div>
+              <div class="timeline-step-content">
+                <span class="step-label">PDB Coordinate Parse</span>
+                <span class="step-detail">RCSB crystal structure coordinates</span>
+              </div>
+            </div>
+            <div class="timeline-step-item completed">
+              <div class="timeline-step-marker">2</div>
+              <div class="timeline-step-content">
+                <span class="step-label">Chain Identification</span>
+                <span class="step-detail">Heavy / Light / Antigen decomposition</span>
+              </div>
+            </div>
+            <div class="timeline-step-item completed">
+              <div class="timeline-step-marker">3</div>
+              <div class="timeline-step-content">
+                <span class="step-label">CDR Delineation</span>
+                <span class="step-detail">IMGT canonical loops (H1–H3, L1–L3)</span>
+              </div>
+            </div>
+            <div class="timeline-step-item completed">
+              <div class="timeline-step-marker">4</div>
+              <div class="timeline-step-content">
+                <span class="step-label">5 &Aring; Contact Graph</span>
+                <span class="step-detail">Side-chain heavy atom distance check</span>
+              </div>
+            </div>
+            <div class="timeline-step-item completed">
+              <div class="timeline-step-marker">5</div>
+              <div class="timeline-step-content">
+                <span class="step-label">Interface Residues</span>
+                <span class="step-detail">Pairwise intramolecular filtering</span>
+              </div>
+            </div>
+            <div class="timeline-step-item completed">
+              <div class="timeline-step-marker">6</div>
+              <div class="timeline-step-content">
+                <span class="step-label">20&times;20 Representation</span>
+                <span class="step-detail">Intramolecular contact normalization</span>
+              </div>
+            </div>
+            <div class="timeline-step-item completed">
+              <div class="timeline-step-marker">7</div>
+              <div class="timeline-step-content">
+                <span class="step-label">20&times;21 CNN Tensor</span>
+                <span class="step-detail">Author-compatible zero-padded shape</span>
+              </div>
+            </div>
+            <div class="timeline-step-item completed">
+              <div class="timeline-step-marker">8</div>
+              <div class="timeline-step-content">
+                <span class="step-label">CNN Prediction</span>
+                <span class="step-detail">Binary Sigmoid output score</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. MODEL ARCHITECTURE & SCIENTIFIC SPECIFICATIONS -->
+        <section id="section-model" class="result-card model-specs-card">
+          <div class="card-title-bar">
+            <div class="title-with-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+              </svg>
+              <h3 class="panel-section-title">Model Architecture &amp; Methodology</h3>
+            </div>
+            <span class="panel-tag">Trained CNN Artifact</span>
+          </div>
+
+          <div class="specs-compact-grid">
+            <div class="spec-metric-block">
+              <span class="spec-label">Input Tensor</span>
+              <span class="spec-value">20 &times; 21 &times; 1</span>
+              <span class="spec-sub">20 amino acids &times; 21 features &times; 1 channel</span>
+            </div>
+            <div class="spec-metric-block">
+              <span class="spec-label">Convolution Layers</span>
+              <span class="spec-value">3 &times; Conv2D (32, 3&times;3)</span>
+              <span class="spec-sub">Same padding &bull; MaxPool2D &bull; Flatten (288)</span>
+            </div>
+            <div class="spec-metric-block">
+              <span class="spec-label">Dense Layers</span>
+              <span class="spec-value">512 &rarr; 64 &rarr; 1</span>
+              <span class="spec-sub">ReLU activations &bull; Sigmoid binary output</span>
+            </div>
+            <div class="spec-metric-block">
+              <span class="spec-label">Trainable Parameters</span>
+              <span class="spec-value">199,681</span>
+              <span class="spec-sub">Verified match to Zhang et al. 2024</span>
+            </div>
+            <div class="spec-metric-block">
+              <span class="spec-label">Classification Threshold</span>
+              <span class="spec-value">0.5000</span>
+              <span class="spec-sub">Class 1 (Cognate) &ge; 0.50 &gt; Class 0 (Mismatched)</span>
+            </div>
+            <div class="spec-metric-block">
+              <span class="spec-label">Leakage-Safe Partitioning</span>
+              <span class="spec-value">Cluster-Disjoint</span>
+              <span class="spec-sub">Zero PDB &amp; zero sequence cluster overlap</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. INTERPRETATION & SCIENTIFIC LIMITATIONS -->
+        <section id="section-limitations" class="result-card limitations-card">
+          <div class="card-title-bar">
+            <div class="title-with-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              <h3 class="panel-section-title">Scientific Scope, Interpretation &amp; Limitations</h3>
+            </div>
+            <span class="limitations-badge">Research Caveats</span>
+          </div>
+
+          <div class="limitations-points-list">
+            <div class="limitation-item">
+              <span class="limitation-bullet">&bull;</span>
+              <div class="limitation-text">
+                <strong>Classification Model, Not Affinity Predictor:</strong>
+                This system performs binary classification of cognate vs. mismatched complexes under the Zhang et al. (2024) Test-3 experimental paradigm. It does <em>not</em> predict physical binding affinity constants ($K_D$, $K_A$, or $\Delta G$).
+              </div>
+            </div>
+            <div class="limitation-item">
+              <span class="limitation-bullet">&bull;</span>
+              <div class="limitation-text">
+                <strong>Model Probability Is Not Calibrated Binding Probability:</strong>
+                The reported probability represents the Sigmoid output of the CNN on the 20&times;21 intramolecular frequency tensor; it must not be interpreted as an experimental chance of physical binding.
+              </div>
+            </div>
+            <div class="limitation-item">
+              <span class="limitation-bullet">&bull;</span>
+              <div class="limitation-text">
+                <strong>Test-3 Performance Is Near Chance:</strong>
+                As reported by Zhang et al. (2024), Test-3 cognate-vs-mismatched classification accuracy on held-out structural complexes is near chance (~50% accuracy, ~0.515 AUC). Intramolecular contact charts lack 3D spatial docking orientation, so mismatched pairs exhibit residue distributions similar to cognate complexes.
+              </div>
+            </div>
+            <div class="limitation-item">
+              <span class="limitation-bullet">&bull;</span>
+              <div class="limitation-text">
+                <strong>Decoy Negatives vs. Verified Non-Binders:</strong>
+                Negative training examples represent synthetic non-cognate pairings (decoy combinations) rather than experimentally verified non-binding complexes.
+              </div>
+            </div>
+            <div class="limitation-item">
+              <span class="limitation-bullet">&bull;</span>
+              <div class="limitation-text">
+                <strong>Test 1 vs. Test 3 Distinction:</strong>
+                Test 1 (Antibody–antigen vs. general protein–protein interactions) and Test 3 (Cognate vs. mismatched antibody–antigen pairing) are separate tasks with different baseline expectations.
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- Application Footer -->
+    <footer class="app-footer" role="contentinfo">
+      <div class="footer-container">
+        <div class="footer-meta-left">
+          <span class="footer-product-name">Antibody–Antigen Interaction Analyzer V2</span>
+          <span class="footer-separator">&bull;</span>
+          <span class="footer-citation">Reproduction of Zhang et al., <em>BioSystems</em> 243:105264 (2024)</span>
+        </div>
+        <div class="footer-meta-right">
+          <span>Vanilla JavaScript / HTML5 Canvas / FastAPI</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
