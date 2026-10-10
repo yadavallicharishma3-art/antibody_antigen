@@ -1,0 +1,1828 @@
+[
+  {
+    "fold": 1,
+    "seed": 42,
+    "epochs_completed": 16,
+    "best_epoch": 1,
+    "train_samples": 66,
+    "val_samples": 8,
+    "validation_metrics": {
+      "loss": 0.6945290962368338,
+      "accuracy": 0.5,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6666666666666666,
+      "roc_auc": 0.3125,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 4,
+        "false_positive": 4,
+        "true_negative": 0,
+        "false_negative": 0,
+        "matrix": [
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            4
+          ]
+        ]
+      }
+    },
+    "training_metrics": {
+      "loss": 0.6917423356127371,
+      "accuracy": 0.5,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6666666666666666,
+      "roc_auc": 0.617998163452709,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 33,
+        "false_positive": 33,
+        "true_negative": 0,
+        "false_negative": 0,
+        "matrix": [
+          [
+            0,
+            33
+          ],
+          [
+            0,
+            33
+          ]
+        ]
+      }
+    },
+    "validation_probability_diagnostics": {
+      "min": 0.5041140913963318,
+      "max": 0.5111051797866821,
+      "mean": 0.5075144544243813,
+      "median": 0.5072844326496124,
+      "std": 0.0026073774408360115,
+      "unique_count": 8,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 4,
+          "min": 0.5041951537132263,
+          "max": 0.5111051797866821,
+          "mean": 0.5081419497728348,
+          "std": 0.0027491962763593393
+        },
+        "class_1": {
+          "count": 4,
+          "min": 0.5041140913963318,
+          "max": 0.5102382898330688,
+          "mean": 0.5068869590759277,
+          "std": 0.00229156131215192
+        }
+      }
+    },
+    "training_probability_diagnostics": {
+      "min": 0.5015931129455566,
+      "max": 0.5177749395370483,
+      "mean": 0.5077275787339066,
+      "median": 0.5068739354610443,
+      "std": 0.003736358462841181,
+      "unique_count": 51,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 33,
+          "min": 0.5015931129455566,
+          "max": 0.5148792266845703,
+          "mean": 0.5069517908674298,
+          "std": 0.003317380959673908
+        },
+        "class_1": {
+          "count": 33,
+          "min": 0.5041345357894897,
+          "max": 0.5177749395370483,
+          "mean": 0.5085033666003834,
+          "std": 0.003963841453254351
+        }
+      }
+    },
+    "sample_predictions": [
+      {
+        "sample_id": "mismatch_pdb_00008pwh_B_A_x_pdb_00001j1p_H_L",
+        "pdb_id": "8PWH_1J1P",
+        "true_label": 0,
+        "pred_probability": 0.5041951537132263,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 1
+      },
+      {
+        "sample_id": "pdb_00001dqj_B_A",
+        "pdb_id": "1DQJ",
+        "true_label": 1,
+        "pred_probability": 0.5041140913963318,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 1
+      },
+      {
+        "sample_id": "pdb_00001him_M_J",
+        "pdb_id": "1HIM",
+        "true_label": 1,
+        "pred_probability": 0.5102382898330688,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 1
+      },
+      {
+        "sample_id": "mismatch_pdb_00001bj1_K_J_x_pdb_00001kir_B_A",
+        "pdb_id": "1BJ1_1KIR",
+        "true_label": 0,
+        "pred_probability": 0.506991982460022,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 1
+      },
+      {
+        "sample_id": "pdb_00001j1p_H_L",
+        "pdb_id": "1J1P",
+        "true_label": 1,
+        "pred_probability": 0.5056185722351074,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 1
+      },
+      {
+        "sample_id": "mismatch_pdb_00001him_M_J_x_pdb_00001ifh_H_L",
+        "pdb_id": "1HIM_1IFH",
+        "true_label": 0,
+        "pred_probability": 0.5111051797866821,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 1
+      },
+      {
+        "sample_id": "mismatch_pdb_00001e4x_H_L_x_pdb_00001kc5_H_L",
+        "pdb_id": "1E4X_1KC5",
+        "true_label": 0,
+        "pred_probability": 0.5102754831314087,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 1
+      },
+      {
+        "sample_id": "pdb_00001cft_B_A",
+        "pdb_id": "1CFT",
+        "true_label": 1,
+        "pred_probability": 0.5075768828392029,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 1
+      }
+    ]
+  },
+  {
+    "fold": 2,
+    "seed": 142,
+    "epochs_completed": 16,
+    "best_epoch": 1,
+    "train_samples": 66,
+    "val_samples": 8,
+    "validation_metrics": {
+      "loss": 0.6950377002879422,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "roc_auc": 0.0,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 0,
+        "false_positive": 0,
+        "true_negative": 4,
+        "false_negative": 4,
+        "matrix": [
+          [
+            4,
+            0
+          ],
+          [
+            4,
+            0
+          ]
+        ]
+      }
+    },
+    "training_metrics": {
+      "loss": 0.6917485691413159,
+      "accuracy": 0.5909090909090909,
+      "precision": 0.75,
+      "recall": 0.2727272727272727,
+      "f1": 0.39999999999999997,
+      "roc_auc": 0.6694214876033058,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 9,
+        "false_positive": 3,
+        "true_negative": 30,
+        "false_negative": 24,
+        "matrix": [
+          [
+            30,
+            3
+          ],
+          [
+            24,
+            9
+          ]
+        ]
+      }
+    },
+    "validation_probability_diagnostics": {
+      "min": 0.4970178008079529,
+      "max": 0.4998093545436859,
+      "mean": 0.4983804225921631,
+      "median": 0.49834150075912476,
+      "std": 0.0010252065799348975,
+      "unique_count": 7,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 4,
+          "min": 0.4988015592098236,
+          "max": 0.4998093545436859,
+          "mean": 0.49932199716567993,
+          "std": 0.00048302956976567155
+        },
+        "class_1": {
+          "count": 4,
+          "min": 0.4970178008079529,
+          "max": 0.4978814423084259,
+          "mean": 0.49743884801864624,
+          "std": 0.0003092800394929317
+        }
+      }
+    },
+    "training_probability_diagnostics": {
+      "min": 0.4906368851661682,
+      "max": 0.5024319887161255,
+      "mean": 0.49778553798343195,
+      "median": 0.4983447939157486,
+      "std": 0.002424267280792897,
+      "unique_count": 43,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 33,
+          "min": 0.4906368851661682,
+          "max": 0.5001174211502075,
+          "mean": 0.4970754791389812,
+          "std": 0.002208356406157408
+        },
+        "class_1": {
+          "count": 33,
+          "min": 0.49392008781433105,
+          "max": 0.5024319887161255,
+          "mean": 0.4984955968278827,
+          "std": 0.0024225892255320645
+        }
+      }
+    },
+    "sample_predictions": [
+      {
+        "sample_id": "pdb_00001hin_H_L",
+        "pdb_id": "1HIN",
+        "true_label": 1,
+        "pred_probability": 0.4973601996898651,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 2
+      },
+      {
+        "sample_id": "mismatch_pdb_00001nbz_B_A_x_pdb_00001bj1_H_L",
+        "pdb_id": "1NBZ_1BJ1",
+        "true_label": 0,
+        "pred_probability": 0.4998093545436859,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 2
+      },
+      {
+        "sample_id": "pdb_00008q6j_D_C",
+        "pdb_id": "8Q6J",
+        "true_label": 1,
+        "pred_probability": 0.4970178008079529,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 2
+      },
+      {
+        "sample_id": "mismatch_pdb_00001kiq_B_A_x_pdb_00001him_L_H",
+        "pdb_id": "1KIQ_1HIM",
+        "true_label": 0,
+        "pred_probability": 0.4988015592098236,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 2
+      },
+      {
+        "sample_id": "pdb_00001g7m_B_A",
+        "pdb_id": "1G7M",
+        "true_label": 1,
+        "pred_probability": 0.49749594926834106,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 2
+      },
+      {
+        "sample_id": "mismatch_pdb_00001dqj_B_A_x_pdb_00001ifh_H_L",
+        "pdb_id": "1DQJ_1IFH",
+        "true_label": 0,
+        "pred_probability": 0.4988779127597809,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 2
+      },
+      {
+        "sample_id": "mismatch_pdb_00001cfs_B_A_x_pdb_00001hh6_B_A",
+        "pdb_id": "1CFS_1HH6",
+        "true_label": 0,
+        "pred_probability": 0.4997991621494293,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 2
+      },
+      {
+        "sample_id": "pdb_00001hi6_B_A",
+        "pdb_id": "1HI6",
+        "true_label": 1,
+        "pred_probability": 0.4978814423084259,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 2
+      }
+    ]
+  },
+  {
+    "fold": 3,
+    "seed": 242,
+    "epochs_completed": 16,
+    "best_epoch": 1,
+    "train_samples": 66,
+    "val_samples": 8,
+    "validation_metrics": {
+      "loss": 0.6925807077864506,
+      "accuracy": 0.5,
+      "precision": 0.5,
+      "recall": 0.75,
+      "f1": 0.6,
+      "roc_auc": 0.5625,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 3,
+        "false_positive": 3,
+        "true_negative": 1,
+        "false_negative": 1,
+        "matrix": [
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            3
+          ]
+        ]
+      }
+    },
+    "training_metrics": {
+      "loss": 0.691644199631268,
+      "accuracy": 0.5757575757575758,
+      "precision": 0.5471698113207547,
+      "recall": 0.8787878787878788,
+      "f1": 0.6744186046511628,
+      "roc_auc": 0.6427915518824608,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 29,
+        "false_positive": 24,
+        "true_negative": 9,
+        "false_negative": 4,
+        "matrix": [
+          [
+            9,
+            24
+          ],
+          [
+            4,
+            29
+          ]
+        ]
+      }
+    },
+    "validation_probability_diagnostics": {
+      "min": 0.4981568455696106,
+      "max": 0.5063796043395996,
+      "mean": 0.5034401677548885,
+      "median": 0.5040808618068695,
+      "std": 0.0030674810397648892,
+      "unique_count": 7,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 4,
+          "min": 0.4981568455696106,
+          "max": 0.5063796043395996,
+          "mean": 0.5031357109546661,
+          "std": 0.003056537841864701
+        },
+        "class_1": {
+          "count": 4,
+          "min": 0.498805433511734,
+          "max": 0.5062724351882935,
+          "mean": 0.5037446245551109,
+          "std": 0.0030481253900520445
+        }
+      }
+    },
+    "training_probability_diagnostics": {
+      "min": 0.49558258056640625,
+      "max": 0.5114447474479675,
+      "mean": 0.5027442416458419,
+      "median": 0.503166675567627,
+      "std": 0.002982150544599838,
+      "unique_count": 50,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 33,
+          "min": 0.49558258056640625,
+          "max": 0.5095840692520142,
+          "mean": 0.5019763708114624,
+          "std": 0.003119676165227025
+        },
+        "class_1": {
+          "count": 33,
+          "min": 0.4989691972732544,
+          "max": 0.5114447474479675,
+          "mean": 0.5035121124802213,
+          "std": 0.0026219864852526096
+        }
+      }
+    },
+    "sample_predictions": [
+      {
+        "sample_id": "pdb_00001ejo_H_L",
+        "pdb_id": "1EJO",
+        "true_label": 1,
+        "pred_probability": 0.498805433511734,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 3
+      },
+      {
+        "sample_id": "pdb_00001jhl_H_L",
+        "pdb_id": "1JHL",
+        "true_label": 1,
+        "pred_probability": 0.506267786026001,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 3
+      },
+      {
+        "sample_id": "mismatch_pdb_00001kir_B_A_x_pdb_00008q6j_D_C",
+        "pdb_id": "1KIR_8Q6J",
+        "true_label": 0,
+        "pred_probability": 0.5063796043395996,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 3
+      },
+      {
+        "sample_id": "mismatch_pdb_00008q6j_D_C_x_pdb_00008pwh_B_A",
+        "pdb_id": "8Q6J_8PWH",
+        "true_label": 0,
+        "pred_probability": 0.4981568455696106,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 3
+      },
+      {
+        "sample_id": "pdb_00001bj1_K_J",
+        "pdb_id": "1BJ1",
+        "true_label": 1,
+        "pred_probability": 0.5062724351882935,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 3
+      },
+      {
+        "sample_id": "mismatch_pdb_00001nby_B_A_x_pdb_00008pwh_B_A",
+        "pdb_id": "1NBY_8PWH",
+        "true_label": 0,
+        "pred_probability": 0.5034775137901306,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 3
+      },
+      {
+        "sample_id": "mismatch_pdb_00001hi6_B_A_x_pdb_00001hh6_B_A",
+        "pdb_id": "1HI6_1HH6",
+        "true_label": 0,
+        "pred_probability": 0.5045288801193237,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 3
+      },
+      {
+        "sample_id": "pdb_00002igf_H_L",
+        "pdb_id": "2IGF",
+        "true_label": 1,
+        "pred_probability": 0.5036328434944153,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 3
+      }
+    ]
+  },
+  {
+    "fold": 4,
+    "seed": 342,
+    "epochs_completed": 19,
+    "best_epoch": 4,
+    "train_samples": 66,
+    "val_samples": 8,
+    "validation_metrics": {
+      "loss": 0.6934126812884969,
+      "accuracy": 0.5,
+      "precision": 0.5,
+      "recall": 0.75,
+      "f1": 0.6,
+      "roc_auc": 0.5,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 3,
+        "false_positive": 3,
+        "true_negative": 1,
+        "false_negative": 1,
+        "matrix": [
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            3
+          ]
+        ]
+      }
+    },
+    "training_metrics": {
+      "loss": 0.6880290870727628,
+      "accuracy": 0.6363636363636364,
+      "precision": 0.5849056603773585,
+      "recall": 0.9393939393939394,
+      "f1": 0.7209302325581395,
+      "roc_auc": 0.8310376492194673,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 31,
+        "false_positive": 22,
+        "true_negative": 11,
+        "false_negative": 2,
+        "matrix": [
+          [
+            11,
+            22
+          ],
+          [
+            2,
+            31
+          ]
+        ]
+      }
+    },
+    "validation_probability_diagnostics": {
+      "min": 0.4997340440750122,
+      "max": 0.5136419534683228,
+      "mean": 0.5075379721820354,
+      "median": 0.5084899663925171,
+      "std": 0.004987215837220273,
+      "unique_count": 8,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 4,
+          "min": 0.4997340440750122,
+          "max": 0.5136419534683228,
+          "mean": 0.5075889825820923,
+          "std": 0.005003721270193261
+        },
+        "class_1": {
+          "count": 4,
+          "min": 0.49982646107673645,
+          "max": 0.5119842290878296,
+          "mean": 0.5074869617819786,
+          "std": 0.004970132085008307
+        }
+      }
+    },
+    "training_probability_diagnostics": {
+      "min": 0.4958668649196625,
+      "max": 0.5214371681213379,
+      "mean": 0.504696836977294,
+      "median": 0.5045166909694672,
+      "std": 0.0047605079422203996,
+      "unique_count": 55,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 33,
+          "min": 0.4958668649196625,
+          "max": 0.5088927745819092,
+          "mean": 0.5020935598647955,
+          "std": 0.0035523109567850227
+        },
+        "class_1": {
+          "count": 33,
+          "min": 0.4982268214225769,
+          "max": 0.5214371681213379,
+          "mean": 0.5073001140897925,
+          "std": 0.004376283257888569
+        }
+      }
+    },
+    "sample_predictions": [
+      {
+        "sample_id": "mismatch_pdb_00001g7m_B_A_x_pdb_00001nbz_B_A",
+        "pdb_id": "1G7M_1NBZ",
+        "true_label": 0,
+        "pred_probability": 0.5081843137741089,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 4
+      },
+      {
+        "sample_id": "pdb_00001a3r_H_L",
+        "pdb_id": "1A3R",
+        "true_label": 1,
+        "pred_probability": 0.49982646107673645,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 4
+      },
+      {
+        "sample_id": "pdb_00001him_L_H",
+        "pdb_id": "1HIM",
+        "true_label": 1,
+        "pred_probability": 0.5063393712043762,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 4
+      },
+      {
+        "sample_id": "mismatch_pdb_00001ifh_H_L_x_pdb_00008q6j_D_C",
+        "pdb_id": "1IFH_8Q6J",
+        "true_label": 0,
+        "pred_probability": 0.4997340440750122,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 4
+      },
+      {
+        "sample_id": "mismatch_pdb_00001hin_H_L_x_pdb_00001ifh_H_L",
+        "pdb_id": "1HIN_1IFH",
+        "true_label": 0,
+        "pred_probability": 0.5136419534683228,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 4
+      },
+      {
+        "sample_id": "pdb_00001mlc_B_A",
+        "pdb_id": "1MLC",
+        "true_label": 1,
+        "pred_probability": 0.5117977857589722,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 4
+      },
+      {
+        "sample_id": "pdb_00001acy_H_L",
+        "pdb_id": "1ACY",
+        "true_label": 1,
+        "pred_probability": 0.5119842290878296,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 4
+      },
+      {
+        "sample_id": "mismatch_pdb_00002igf_H_L_x_pdb_00001hh6_B_A",
+        "pdb_id": "2IGF_1HH6",
+        "true_label": 0,
+        "pred_probability": 0.5087956190109253,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 4
+      }
+    ]
+  },
+  {
+    "fold": 5,
+    "seed": 442,
+    "epochs_completed": 16,
+    "best_epoch": 1,
+    "train_samples": 67,
+    "val_samples": 7,
+    "validation_metrics": {
+      "loss": 0.687332700871741,
+      "accuracy": 0.5714285714285714,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "roc_auc": 0.8333333333333334,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 0,
+        "false_positive": 0,
+        "true_negative": 4,
+        "false_negative": 3,
+        "matrix": [
+          [
+            4,
+            0
+          ],
+          [
+            3,
+            0
+          ]
+        ]
+      }
+    },
+    "training_metrics": {
+      "loss": 0.6919073136850774,
+      "accuracy": 0.5074626865671642,
+      "precision": 1.0,
+      "recall": 0.029411764705882353,
+      "f1": 0.05714285714285715,
+      "roc_auc": 0.5819964349376114,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 1,
+        "false_positive": 0,
+        "true_negative": 33,
+        "false_negative": 33,
+        "matrix": [
+          [
+            33,
+            0
+          ],
+          [
+            33,
+            1
+          ]
+        ]
+      }
+    },
+    "validation_probability_diagnostics": {
+      "min": 0.4825865626335144,
+      "max": 0.4904293119907379,
+      "mean": 0.48744099906512667,
+      "median": 0.48666802048683167,
+      "std": 0.002591446853928352,
+      "unique_count": 6,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 4,
+          "min": 0.4825865626335144,
+          "max": 0.4899693727493286,
+          "mean": 0.4863242655992508,
+          "std": 0.002618377008603988
+        },
+        "class_1": {
+          "count": 3,
+          "min": 0.48666802048683167,
+          "max": 0.4904293119907379,
+          "mean": 0.48892997701962787,
+          "std": 0.0016274770206469598
+        }
+      }
+    },
+    "training_probability_diagnostics": {
+      "min": 0.47502005100250244,
+      "max": 0.5019828081130981,
+      "mean": 0.4888733923435211,
+      "median": 0.4900974929332733,
+      "std": 0.006661345762856191,
+      "unique_count": 62,
+      "fraction_near_05": 1.0,
+      "has_collapsed": false,
+      "collapse_assessment": "NORMAL: Predicted probabilities show responsive variation across inputs",
+      "class_breakdown": {
+        "class_0": {
+          "count": 33,
+          "min": 0.47606703639030457,
+          "max": 0.4999500513076782,
+          "mean": 0.487905249451146,
+          "std": 0.006633113287205173
+        },
+        "class_1": {
+          "count": 34,
+          "min": 0.47502005100250244,
+          "max": 0.5019828081130981,
+          "mean": 0.48981306044494405,
+          "std": 0.006553252204071725
+        }
+      }
+    },
+    "sample_predictions": [
+      {
+        "sample_id": "mismatch_pdb_00001ejo_H_L_x_pdb_00008pwh_B_A",
+        "pdb_id": "1EJO_8PWH",
+        "true_label": 0,
+        "pred_probability": 0.4825865626335144,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 5
+      },
+      {
+        "sample_id": "pdb_00001ifh_H_L",
+        "pdb_id": "1IFH",
+        "true_label": 1,
+        "pred_probability": 0.48666802048683167,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 5
+      },
+      {
+        "sample_id": "mismatch_pdb_00001j1p_H_L_x_pdb_00008pwh_B_A",
+        "pdb_id": "1J1P_8PWH",
+        "true_label": 0,
+        "pred_probability": 0.4899693727493286,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 5
+      },
+      {
+        "sample_id": "pdb_00004hkz_B_A",
+        "pdb_id": "4HKZ",
+        "true_label": 1,
+        "pred_probability": 0.4904293119907379,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 5
+      },
+      {
+        "sample_id": "mismatch_pdb_00001mlc_D_C_x_pdb_00008pwh_D_C",
+        "pdb_id": "1MLC_8PWH",
+        "true_label": 0,
+        "pred_probability": 0.48665523529052734,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 5
+      },
+      {
+        "sample_id": "mismatch_pdb_00001hh9_B_A_x_pdb_00002igf_H_L",
+        "pdb_id": "1HH9_2IGF",
+        "true_label": 0,
+        "pred_probability": 0.4860858917236328,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 5
+      },
+      {
+        "sample_id": "pdb_00001hh6_B_A",
+        "pdb_id": "1HH6",
+        "true_label": 1,
+        "pred_probability": 0.4896925985813141,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 5
+      }
+    ]
+  },
+  {
+    "fold": 6,
+    "seed": 542,
+    "epochs_completed": 23,
+    "best_epoch": 8,
+    "train_samples": 67,
+    "val_samples": 7,
+    "validation_metrics": {
+      "loss": 0.6884124704253081,
+      "accuracy": 0.5714285714285714,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "roc_auc": 0.25,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 0,
+        "false_positive": 0,
+        "true_negative": 4,
+        "false_negative": 3,
+        "matrix": [
+          [
+            4,
+            0
+          ],
+          [
+            3,
+            0
+          ]
+        ]
+      }
+    },
+    "training_metrics": {
+      "loss": 0.6846110826944454,
+      "accuracy": 0.5074626865671642,
+      "precision": 1.0,
+      "recall": 0.029411764705882353,
+      "f1": 0.05714285714285715,
+      "roc_auc": 0.8083778966131907,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 1,
+        "false_positive": 0,
+        "true_negative": 33,
+        "false_negative": 33,
+        "matrix": [
+          [
+            33,
+            0
+          ],
+          [
+            33,
+            1
+          ]
+        ]
+      }
+    },
+    "validation_probability_diagnostics": {
+      "min": 0.46376675367355347,
+      "max": 0.4769040048122406,
+      "mean": 0.4724397531577519,
+      "median": 0.4744266867637634,
+      "std": 0.0045206263859231864,
+      "unique_count": 7,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 4,
+          "min": 0.46376675367355347,
+          "max": 0.4769040048122406,
+          "mean": 0.4731324687600136,
+          "std": 0.005449371671270898
+        },
+        "class_1": {
+          "count": 3,
+          "min": 0.46817880868911743,
+          "max": 0.4744266867637634,
+          "mean": 0.47151613235473633,
+          "std": 0.002568474788363641
+        }
+      }
+    },
+    "training_probability_diagnostics": {
+      "min": 0.4514841139316559,
+      "max": 0.5004558563232422,
+      "mean": 0.4792520982116016,
+      "median": 0.4803234338760376,
+      "std": 0.009747026513890797,
+      "unique_count": 66,
+      "fraction_near_05": 1.0,
+      "has_collapsed": false,
+      "collapse_assessment": "NORMAL: Predicted probabilities show responsive variation across inputs",
+      "class_breakdown": {
+        "class_0": {
+          "count": 33,
+          "min": 0.4514841139316559,
+          "max": 0.48959484696388245,
+          "mean": 0.4740817944208781,
+          "std": 0.008827503638822903
+        },
+        "class_1": {
+          "count": 34,
+          "min": 0.4664866328239441,
+          "max": 0.5004558563232422,
+          "mean": 0.4842703342437744,
+          "std": 0.007775177766553143
+        }
+      }
+    },
+    "sample_predictions": [
+      {
+        "sample_id": "pdb_00008pwh_B_A",
+        "pdb_id": "8PWH",
+        "true_label": 1,
+        "pred_probability": 0.46817880868911743,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 6
+      },
+      {
+        "sample_id": "mismatch_pdb_00004hkz_B_A_x_pdb_00008q6j_D_C",
+        "pdb_id": "4HKZ_8Q6J",
+        "true_label": 0,
+        "pred_probability": 0.4767022430896759,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 6
+      },
+      {
+        "sample_id": "pdb_00008pwh_D_C",
+        "pdb_id": "8PWH",
+        "true_label": 1,
+        "pred_probability": 0.4744266867637634,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 6
+      },
+      {
+        "sample_id": "mismatch_pdb_00001e4w_H_L_x_pdb_00001kc5_H_L",
+        "pdb_id": "1E4W_1KC5",
+        "true_label": 0,
+        "pred_probability": 0.46376675367355347,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 6
+      },
+      {
+        "sample_id": "mismatch_pdb_00001acy_H_L_x_pdb_00001hi6_B_A",
+        "pdb_id": "1ACY_1HI6",
+        "true_label": 0,
+        "pred_probability": 0.4769040048122406,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 6
+      },
+      {
+        "sample_id": "mismatch_pdb_00001cft_B_A_x_pdb_00001hi6_B_A",
+        "pdb_id": "1CFT_1HI6",
+        "true_label": 0,
+        "pred_probability": 0.47515687346458435,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 6
+      },
+      {
+        "sample_id": "pdb_00001cfs_B_A",
+        "pdb_id": "1CFS",
+        "true_label": 1,
+        "pred_probability": 0.4719429016113281,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 6
+      }
+    ]
+  },
+  {
+    "fold": 7,
+    "seed": 642,
+    "epochs_completed": 16,
+    "best_epoch": 1,
+    "train_samples": 67,
+    "val_samples": 7,
+    "validation_metrics": {
+      "loss": 0.6990647327939589,
+      "accuracy": 0.42857142857142855,
+      "precision": 0.42857142857142855,
+      "recall": 1.0,
+      "f1": 0.6,
+      "roc_auc": 0.3333333333333333,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 3,
+        "false_positive": 4,
+        "true_negative": 0,
+        "false_negative": 0,
+        "matrix": [
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            3
+          ]
+        ]
+      }
+    },
+    "training_metrics": {
+      "loss": 0.6904572304181507,
+      "accuracy": 0.5223880597014925,
+      "precision": 0.5151515151515151,
+      "recall": 1.0,
+      "f1": 0.6799999999999999,
+      "roc_auc": 0.7058823529411765,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 34,
+        "false_positive": 32,
+        "true_negative": 1,
+        "false_negative": 0,
+        "matrix": [
+          [
+            1,
+            32
+          ],
+          [
+            0,
+            34
+          ]
+        ]
+      }
+    },
+    "validation_probability_diagnostics": {
+      "min": 0.5012131929397583,
+      "max": 0.5150229930877686,
+      "mean": 0.5055455224854606,
+      "median": 0.5038319826126099,
+      "std": 0.004678763193677252,
+      "unique_count": 7,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 4,
+          "min": 0.5012131929397583,
+          "max": 0.5150229930877686,
+          "mean": 0.5073944926261902,
+          "std": 0.00532842603112889
+        },
+        "class_1": {
+          "count": 3,
+          "min": 0.5019277334213257,
+          "max": 0.5053545832633972,
+          "mean": 0.5030802289644877,
+          "std": 0.001608259983317764
+        }
+      }
+    },
+    "training_probability_diagnostics": {
+      "min": 0.49936819076538086,
+      "max": 0.5159629583358765,
+      "mean": 0.5063104086847448,
+      "median": 0.5060608386993408,
+      "std": 0.0035073006618462133,
+      "unique_count": 53,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 33,
+          "min": 0.49936819076538086,
+          "max": 0.5115337371826172,
+          "mean": 0.5049880652716665,
+          "std": 0.0030139888941967626
+        },
+        "class_1": {
+          "count": 34,
+          "min": 0.5017543435096741,
+          "max": 0.5159629583358765,
+          "mean": 0.5075938596444971,
+          "std": 0.0034755084557063884
+        }
+      }
+    },
+    "sample_predictions": [
+      {
+        "sample_id": "pdb_00001mlc_D_C",
+        "pdb_id": "1MLC",
+        "true_label": 1,
+        "pred_probability": 0.5053545832633972,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 7
+      },
+      {
+        "sample_id": "mismatch_pdb_00001e6j_H_L_x_pdb_00001him_L_H",
+        "pdb_id": "1E6J_1HIM",
+        "true_label": 0,
+        "pred_probability": 0.509509801864624,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 7
+      },
+      {
+        "sample_id": "mismatch_pdb_00008pwh_D_C_x_pdb_00001ejo_H_L",
+        "pdb_id": "8PWH_1EJO",
+        "true_label": 0,
+        "pred_probability": 0.5150229930877686,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 7
+      },
+      {
+        "sample_id": "mismatch_pdb_00008q6j_B_A_x_pdb_00001bj1_H_L",
+        "pdb_id": "8Q6J_1BJ1",
+        "true_label": 0,
+        "pred_probability": 0.5012131929397583,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 7
+      },
+      {
+        "sample_id": "pdb_00001bj1_H_L",
+        "pdb_id": "1BJ1",
+        "true_label": 1,
+        "pred_probability": 0.5019583702087402,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 7
+      },
+      {
+        "sample_id": "mismatch_pdb_00001a3r_H_L_x_pdb_00001g7m_B_A",
+        "pdb_id": "1A3R_1G7M",
+        "true_label": 0,
+        "pred_probability": 0.5038319826126099,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 7
+      },
+      {
+        "sample_id": "pdb_00001hh9_B_A",
+        "pdb_id": "1HH9",
+        "true_label": 1,
+        "pred_probability": 0.5019277334213257,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 7
+      }
+    ]
+  },
+  {
+    "fold": 8,
+    "seed": 742,
+    "epochs_completed": 16,
+    "best_epoch": 1,
+    "train_samples": 67,
+    "val_samples": 7,
+    "validation_metrics": {
+      "loss": 0.6977929431050749,
+      "accuracy": 0.42857142857142855,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "roc_auc": 0.0,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 0,
+        "false_positive": 0,
+        "true_negative": 3,
+        "false_negative": 4,
+        "matrix": [
+          [
+            3,
+            0
+          ],
+          [
+            4,
+            0
+          ]
+        ]
+      }
+    },
+    "training_metrics": {
+      "loss": 0.6902450970831702,
+      "accuracy": 0.5970149253731343,
+      "precision": 0.875,
+      "recall": 0.21212121212121213,
+      "f1": 0.3414634146341463,
+      "roc_auc": 0.7219251336898396,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 7,
+        "false_positive": 1,
+        "true_negative": 33,
+        "false_negative": 26,
+        "matrix": [
+          [
+            33,
+            1
+          ],
+          [
+            26,
+            7
+          ]
+        ]
+      }
+    },
+    "validation_probability_diagnostics": {
+      "min": 0.49154895544052124,
+      "max": 0.49639376997947693,
+      "mean": 0.494377144745418,
+      "median": 0.4954749345779419,
+      "std": 0.001883089626325181,
+      "unique_count": 7,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 3,
+          "min": 0.49561426043510437,
+          "max": 0.49639376997947693,
+          "mean": 0.4961087107658386,
+          "std": 0.00035099122722274695
+        },
+        "class_1": {
+          "count": 4,
+          "min": 0.49154895544052124,
+          "max": 0.4954749345779419,
+          "mean": 0.49307847023010254,
+          "std": 0.0014757554526840864
+        }
+      }
+    },
+    "training_probability_diagnostics": {
+      "min": 0.48661258816719055,
+      "max": 0.5090301632881165,
+      "mean": 0.4957409251981707,
+      "median": 0.49560680985450745,
+      "std": 0.003647920501314411,
+      "unique_count": 54,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 34,
+          "min": 0.48661258816719055,
+          "max": 0.5021220445632935,
+          "mean": 0.494343060780974,
+          "std": 0.0032212462648940603
+        },
+        "class_1": {
+          "count": 33,
+          "min": 0.49057281017303467,
+          "max": 0.5090301632881165,
+          "mean": 0.4971811491431612,
+          "std": 0.003498507209725246
+        }
+      }
+    },
+    "sample_predictions": [
+      {
+        "sample_id": "pdb_00008q6j_B_A",
+        "pdb_id": "8Q6J",
+        "true_label": 1,
+        "pred_probability": 0.4922892153263092,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 8
+      },
+      {
+        "sample_id": "mismatch_pdb_00001mlc_B_A_x_pdb_00001bj1_K_J",
+        "pdb_id": "1MLC_1BJ1",
+        "true_label": 0,
+        "pred_probability": 0.49561426043510437,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 8
+      },
+      {
+        "sample_id": "pdb_00001nbz_B_A",
+        "pdb_id": "1NBZ",
+        "true_label": 1,
+        "pred_probability": 0.4954749345779419,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 8
+      },
+      {
+        "sample_id": "pdb_00001kc5_H_L",
+        "pdb_id": "1KC5",
+        "true_label": 1,
+        "pred_probability": 0.49154895544052124,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 8
+      },
+      {
+        "sample_id": "mismatch_pdb_00001hh6_B_A_x_pdb_00001cfs_B_A",
+        "pdb_id": "1HH6_1CFS",
+        "true_label": 0,
+        "pred_probability": 0.49631810188293457,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 8
+      },
+      {
+        "sample_id": "pdb_00001bog_B_A",
+        "pdb_id": "1BOG",
+        "true_label": 1,
+        "pred_probability": 0.4930007755756378,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 8
+      },
+      {
+        "sample_id": "mismatch_pdb_00001bog_B_A_x_pdb_00001cft_B_A",
+        "pdb_id": "1BOG_1CFT",
+        "true_label": 0,
+        "pred_probability": 0.49639376997947693,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 8
+      }
+    ]
+  },
+  {
+    "fold": 9,
+    "seed": 842,
+    "epochs_completed": 21,
+    "best_epoch": 6,
+    "train_samples": 67,
+    "val_samples": 7,
+    "validation_metrics": {
+      "loss": 0.6926628292525346,
+      "accuracy": 0.5714285714285714,
+      "precision": 0.5714285714285714,
+      "recall": 1.0,
+      "f1": 0.7272727272727273,
+      "roc_auc": 0.3333333333333333,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 4,
+        "false_positive": 3,
+        "true_negative": 0,
+        "false_negative": 0,
+        "matrix": [
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ]
+        ]
+      }
+    },
+    "training_metrics": {
+      "loss": 0.6876720619638714,
+      "accuracy": 0.5074626865671642,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6666666666666666,
+      "roc_auc": 0.8556149732620321,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 33,
+        "false_positive": 33,
+        "true_negative": 1,
+        "false_negative": 0,
+        "matrix": [
+          [
+            1,
+            33
+          ],
+          [
+            0,
+            33
+          ]
+        ]
+      }
+    },
+    "validation_probability_diagnostics": {
+      "min": 0.5074847936630249,
+      "max": 0.5166844725608826,
+      "mean": 0.5111125877925328,
+      "median": 0.5101805925369263,
+      "std": 0.0029373727337373497,
+      "unique_count": 7,
+      "fraction_near_05": 1.0,
+      "has_collapsed": true,
+      "collapse_assessment": "WARNING: Probability collapse detected (predictions concentrated narrowly around constant)",
+      "class_breakdown": {
+        "class_0": {
+          "count": 3,
+          "min": 0.5085582733154297,
+          "max": 0.5166844725608826,
+          "mean": 0.5125273863474528,
+          "std": 0.003320168568200099
+        },
+        "class_1": {
+          "count": 4,
+          "min": 0.5074847936630249,
+          "max": 0.5131732225418091,
+          "mean": 0.5100514888763428,
+          "std": 0.002050479430631039
+        }
+      }
+    },
+    "training_probability_diagnostics": {
+      "min": 0.49977749586105347,
+      "max": 0.5244940519332886,
+      "mean": 0.5103969218125984,
+      "median": 0.5094379782676697,
+      "std": 0.005020902614981314,
+      "unique_count": 55,
+      "fraction_near_05": 1.0,
+      "has_collapsed": false,
+      "collapse_assessment": "NORMAL: Predicted probabilities show responsive variation across inputs",
+      "class_breakdown": {
+        "class_0": {
+          "count": 34,
+          "min": 0.49977749586105347,
+          "max": 0.5142817497253418,
+          "mean": 0.5074170740211711,
+          "std": 0.0032205731381055184
+        },
+        "class_1": {
+          "count": 33,
+          "min": 0.5065844058990479,
+          "max": 0.5244940519332886,
+          "mean": 0.5134670680219476,
+          "std": 0.0046821027303429
+        }
+      }
+    },
+    "sample_predictions": [
+      {
+        "sample_id": "pdb_00001e6j_H_L",
+        "pdb_id": "1E6J",
+        "true_label": 1,
+        "pred_probability": 0.5131732225418091,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 9
+      },
+      {
+        "sample_id": "mismatch_pdb_00001bj1_H_L_x_pdb_00004hkz_B_A",
+        "pdb_id": "1BJ1_4HKZ",
+        "true_label": 0,
+        "pred_probability": 0.5166844725608826,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 9
+      },
+      {
+        "sample_id": "pdb_00001kiq_B_A",
+        "pdb_id": "1KIQ",
+        "true_label": 1,
+        "pred_probability": 0.5074847936630249,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 9
+      },
+      {
+        "sample_id": "pdb_00001nby_B_A",
+        "pdb_id": "1NBY",
+        "true_label": 1,
+        "pred_probability": 0.5101805925369263,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 9
+      },
+      {
+        "sample_id": "mismatch_pdb_00001jhl_H_L_x_pdb_00001dqj_B_A",
+        "pdb_id": "1JHL_1DQJ",
+        "true_label": 0,
+        "pred_probability": 0.5085582733154297,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 9
+      },
+      {
+        "sample_id": "pdb_00001e4w_H_L",
+        "pdb_id": "1E4W",
+        "true_label": 1,
+        "pred_probability": 0.5093673467636108,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 9
+      },
+      {
+        "sample_id": "mismatch_pdb_00001kc5_H_L_x_pdb_00001e4w_H_L",
+        "pdb_id": "1KC5_1E4W",
+        "true_label": 0,
+        "pred_probability": 0.5123394131660461,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 9
+      }
+    ]
+  },
+  {
+    "fold": 10,
+    "seed": 942,
+    "epochs_completed": 60,
+    "best_epoch": 59,
+    "train_samples": 67,
+    "val_samples": 7,
+    "validation_metrics": {
+      "loss": 0.5157953555935512,
+      "accuracy": 0.5714285714285714,
+      "precision": 0.6,
+      "recall": 0.75,
+      "f1": 0.6666666666666665,
+      "roc_auc": 0.8333333333333334,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 3,
+        "false_positive": 2,
+        "true_negative": 1,
+        "false_negative": 1,
+        "matrix": [
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ]
+        ]
+      }
+    },
+    "training_metrics": {
+      "loss": 0.2674458797710724,
+      "accuracy": 0.9850746268656716,
+      "precision": 0.9705882352941176,
+      "recall": 1.0,
+      "f1": 0.9850746268656716,
+      "roc_auc": 0.9991087344028521,
+      "auc_note": null,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "true_positive": 33,
+        "false_positive": 1,
+        "true_negative": 33,
+        "false_negative": 0,
+        "matrix": [
+          [
+            33,
+            1
+          ],
+          [
+            0,
+            33
+          ]
+        ]
+      }
+    },
+    "validation_probability_diagnostics": {
+      "min": 0.10641492158174515,
+      "max": 0.7889883518218994,
+      "mean": 0.5496428747262273,
+      "median": 0.5870013236999512,
+      "std": 0.22226682916038,
+      "unique_count": 7,
+      "fraction_near_05": 0.14285714285714285,
+      "has_collapsed": false,
+      "collapse_assessment": "NORMAL: Predicted probabilities show responsive variation across inputs",
+      "class_breakdown": {
+        "class_0": {
+          "count": 3,
+          "min": 0.10641492158174515,
+          "max": 0.5870013236999512,
+          "mean": 0.40955623239278793,
+          "std": 0.21539185557707932
+        },
+        "class_1": {
+          "count": 4,
+          "min": 0.3812374770641327,
+          "max": 0.7889883518218994,
+          "mean": 0.6547078564763069,
+          "std": 0.16094210560548272
+        }
+      }
+    },
+    "training_probability_diagnostics": {
+      "min": 0.027471931651234627,
+      "max": 0.9465404748916626,
+      "mean": 0.4849274372264965,
+      "median": 0.5275769233703613,
+      "std": 0.29870823466818874,
+      "unique_count": 67,
+      "fraction_near_05": 0.04477611940298507,
+      "has_collapsed": false,
+      "collapse_assessment": "NORMAL: Predicted probabilities show responsive variation across inputs",
+      "class_breakdown": {
+        "class_0": {
+          "count": 34,
+          "min": 0.027471931651234627,
+          "max": 0.5333728790283203,
+          "mean": 0.2142429282231366,
+          "std": 0.12523701042885582
+        },
+        "class_1": {
+          "count": 33,
+          "min": 0.5275769233703613,
+          "max": 0.9465404748916626,
+          "mean": 0.7638145071087461,
+          "std": 0.10830077273975264
+        }
+      }
+    },
+    "sample_predictions": [
+      {
+        "sample_id": "mismatch_pdb_00001him_L_H_x_pdb_00008q6j_B_A",
+        "pdb_id": "1HIM_8Q6J",
+        "true_label": 0,
+        "pred_probability": 0.5870013236999512,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 10
+      },
+      {
+        "sample_id": "pdb_00001kir_B_A",
+        "pdb_id": "1KIR",
+        "true_label": 1,
+        "pred_probability": 0.7007949948310852,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 10
+      },
+      {
+        "sample_id": "pdb_00001ce1_H_L",
+        "pdb_id": "1CE1",
+        "true_label": 1,
+        "pred_probability": 0.7889883518218994,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 10
+      },
+      {
+        "sample_id": "mismatch_pdb_00001e4x_I_M_x_pdb_00001kc5_H_L",
+        "pdb_id": "1E4X_1KC5",
+        "true_label": 0,
+        "pred_probability": 0.10641492158174515,
+        "pred_label": 0,
+        "correct": true,
+        "fold": 10
+      },
+      {
+        "sample_id": "mismatch_pdb_00001ce1_H_L_x_pdb_00001e4x_I_M",
+        "pdb_id": "1CE1_1E4X",
+        "true_label": 0,
+        "pred_probability": 0.5352524518966675,
+        "pred_label": 1,
+        "correct": false,
+        "fold": 10
+      },
+      {
+        "sample_id": "pdb_00001e4x_I_M",
+        "pdb_id": "1E4X",
+        "true_label": 1,
+        "pred_probability": 0.7478106021881104,
+        "pred_label": 1,
+        "correct": true,
+        "fold": 10
+      },
+      {
+        "sample_id": "pdb_00001e4x_H_L",
+        "pdb_id": "1E4X",
+        "true_label": 1,
+        "pred_probability": 0.3812374770641327,
+        "pred_label": 0,
+        "correct": false,
+        "fold": 10
+      }
+    ]
+  }
+]

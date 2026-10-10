@@ -1,0 +1,218 @@
+{
+  "project": "Antibody-Antigen Interaction Analyzer V2",
+  "phase": 5,
+  "timestamp_utc": "2026-09-28T17:13:03.305864+00:00",
+  "paper_reference": "Zhang et al., 2024 (BioSystems 243:105264)",
+  "representation_version": "Phase3_Author_Compatible_20x21",
+  "input_shape": [
+    20,
+    21,
+    1
+  ],
+  "amino_acid_ordering": [
+    "ALA",
+    "ARG",
+    "ASN",
+    "ASP",
+    "CYS",
+    "GLN",
+    "GLU",
+    "GLY",
+    "HIS",
+    "ILE",
+    "LEU",
+    "LYS",
+    "MET",
+    "PHE",
+    "PRO",
+    "SER",
+    "THR",
+    "TRP",
+    "TYR",
+    "VAL"
+  ],
+  "normalization": "Per-complex min-max independent normalization ([0, 1] range)",
+  "contact_definition": "5.0 A heavy atom distance cutoff between side chains",
+  "cdr_definition": "IMGT numbering from SAbDab metadata",
+  "model_architecture": {
+    "model_name": "antibody_antigen_cnn",
+    "input_shape": [
+      null,
+      20,
+      21,
+      1
+    ],
+    "total_parameters": 199681,
+    "trainable_parameters": 199681,
+    "non_trainable_parameters": 0,
+    "layers": [
+      {
+        "name": "conv1",
+        "class": "Conv2D",
+        "output_shape": [
+          null,
+          20,
+          21,
+          32
+        ],
+        "param_count": 320,
+        "filters": 32,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "activation": "relu"
+      },
+      {
+        "name": "pool1",
+        "class": "MaxPooling2D",
+        "output_shape": [
+          null,
+          10,
+          11,
+          32
+        ],
+        "param_count": 0
+      },
+      {
+        "name": "conv2",
+        "class": "Conv2D",
+        "output_shape": [
+          null,
+          10,
+          11,
+          32
+        ],
+        "param_count": 9248,
+        "filters": 32,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "activation": "relu"
+      },
+      {
+        "name": "pool2",
+        "class": "MaxPooling2D",
+        "output_shape": [
+          null,
+          5,
+          6,
+          32
+        ],
+        "param_count": 0
+      },
+      {
+        "name": "conv3",
+        "class": "Conv2D",
+        "output_shape": [
+          null,
+          5,
+          6,
+          32
+        ],
+        "param_count": 9248,
+        "filters": 32,
+        "kernel_size": [
+          3,
+          3
+        ],
+        "activation": "relu"
+      },
+      {
+        "name": "pool3",
+        "class": "MaxPooling2D",
+        "output_shape": [
+          null,
+          3,
+          3,
+          32
+        ],
+        "param_count": 0
+      },
+      {
+        "name": "flatten",
+        "class": "Flatten",
+        "output_shape": [
+          null,
+          288
+        ],
+        "param_count": 0
+      },
+      {
+        "name": "dense_512",
+        "class": "Dense",
+        "output_shape": [
+          null,
+          512
+        ],
+        "param_count": 147968,
+        "activation": "relu"
+      },
+      {
+        "name": "dense_64",
+        "class": "Dense",
+        "output_shape": [
+          null,
+          64
+        ],
+        "param_count": 32832,
+        "activation": "relu"
+      },
+      {
+        "name": "classification_output",
+        "class": "Dense",
+        "output_shape": [
+          null,
+          1
+        ],
+        "param_count": 65,
+        "activation": "sigmoid"
+      }
+    ],
+    "flatten_dim": 288
+  },
+  "optimizer": {
+    "name": "Adam",
+    "learning_rate": 0.0001
+  },
+  "loss": "binary_crossentropy",
+  "training_configuration": {
+    "epochs_requested": 60,
+    "epochs_completed": 32,
+    "best_epoch": 17,
+    "batch_size": 8,
+    "early_stopping_monitor": "val_loss",
+    "early_stopping_patience": 15,
+    "class_weights": {
+      "0": 1.0,
+      "1": 1.0
+    },
+    "class_weight_rationale": "Balanced class weights computed from training split: {0: 1.0, 1: 1.0} (class 0: 24, class 1: 24).",
+    "seeds": {
+      "python_seed": 42,
+      "numpy_seed": 42,
+      "tensorflow_seed": 42
+    }
+  },
+  "dataset_split_statistics": {
+    "train_samples": 48,
+    "train_unique_pdbs": 43,
+    "train_positives": 24,
+    "train_negatives": 24,
+    "val_samples": 10,
+    "val_unique_pdbs": 8,
+    "val_positives": 5,
+    "val_negatives": 5,
+    "test_samples": 16,
+    "test_unique_pdbs": 16,
+    "test_positives": 8,
+    "test_negatives": 8
+  },
+  "saved_artifacts": {
+    "model_path": "model\\antibody_antigen_cnn.keras",
+    "history_path": "model\\training_history.json",
+    "evaluation_path": "model\\evaluation.json",
+    "config_path": "model\\model_config.json"
+  }
+}

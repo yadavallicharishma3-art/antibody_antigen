@@ -1,0 +1,13 @@
+sample_id,pdb_id,true_label,class_type,pred_probability,pred_label,correct
+pdb_00001kir_B_A,1KIR,1,antibody_antigen,0.9407467842102051,1,True
+ppi_2DHR_C_B,2DHR,0,general_ppi,0.28154000639915466,0,True
+ppi_1GHQ_A_B,1GHQ,0,general_ppi,0.5695837736129761,1,False
+ppi_1OFH_C_H,1OFH,0,general_ppi,0.5300307273864746,1,False
+ppi_1XV2_C_D,1XV2,0,general_ppi,0.3491307497024536,0,True
+pdb_00001hi6_B_A,1HI6,1,antibody_antigen,0.9537995457649231,1,True
+pdb_00001e4w_H_L,1E4W,1,antibody_antigen,0.3792225122451782,0,False
+ppi_1XXI_B_A,1XXI,0,general_ppi,0.03130644932389259,0,True
+pdb_00001g7m_B_A,1G7M,1,antibody_antigen,0.9445005655288696,1,True
+pdb_00002igf_H_L,2IGF,1,antibody_antigen,0.9458261728286743,1,True
+pdb_00001hin_H_L,1HIN,1,antibody_antigen,0.9084058403968811,1,True
+ppi_2J4Y_A_B,2J4Y,0,general_ppi,0.31116995215415955,0,True

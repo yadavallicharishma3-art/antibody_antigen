@@ -1,0 +1,59 @@
+{
+  "task": "Zhang et al. 2024 Test 1 \u2014 Antibody-Antigen vs General Protein-Protein Interaction",
+  "total_samples": 74,
+  "positive_count": 37,
+  "negative_count": 37,
+  "total_unique_pdbs": 68,
+  "unique_positive_pdbs": 31,
+  "unique_negative_pdbs": 37,
+  "train_samples": 50,
+  "train_pos": 25,
+  "train_neg": 25,
+  "train_unique_pdbs": 47,
+  "train_pos_pdbs": 22,
+  "train_neg_pdbs": 25,
+  "val_samples": 12,
+  "val_pos": 6,
+  "val_neg": 6,
+  "val_unique_pdbs": 9,
+  "val_pos_pdbs": 3,
+  "val_neg_pdbs": 6,
+  "test_samples": 12,
+  "test_pos": 6,
+  "test_neg": 6,
+  "test_unique_pdbs": 12,
+  "test_pos_pdbs": 6,
+  "test_neg_pdbs": 6,
+  "train_val_pdb_overlap": 0,
+  "train_test_pdb_overlap": 0,
+  "val_test_pdb_overlap": 0,
+  "pos_pdb_overlap_total": 0,
+  "neg_pdb_overlap_total": 0,
+  "cross_class_pdb_overlap": 0,
+  "pdb_level_disjoint": true,
+  "rejected_negatives_count": 5,
+  "rejected_negatives_sample": [
+    {
+      "pdb": "1IB1",
+      "reason": "Zero intramolecular contacts in interface for 1IB1 (D: 0, E: 0) [divide-by-zero normalization failure per Zhang et al. 2024 part2.ipynb Cell 4]"
+    },
+    {
+      "pdb": "1BBX",
+      "reason": "No intermolecular interface residues at 5.0 \u00c5 between chains C and D"
+    },
+    {
+      "pdb": "2R4R",
+      "reason": "Excluded: SAbDab antibody-antigen complex"
+    },
+    {
+      "pdb": "1HT2",
+      "reason": "Zero intramolecular contacts in interface for 1HT2 (H: 0, J: 5) [divide-by-zero normalization failure per Zhang et al. 2024 part2.ipynb Cell 4]"
+    },
+    {
+      "pdb": "3B5W",
+      "reason": "Missing side-chain heavy atoms in 3B5W chains G/H"
+    }
+  ],
+  "zero_sample_overlap": true,
+  "random_seed": 42
+}

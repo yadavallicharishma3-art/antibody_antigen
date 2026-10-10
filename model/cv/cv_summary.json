@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "task": "Zhang et al. 2024 Test-3-style cognate-vs-mismatched pairing classification",
+    "evaluation_method": "10-Fold Stratified Cross-Validation",
+    "total_samples": 74,
+    "positive_samples": 37,
+    "negative_samples": 37,
+    "unique_pdbs": 67,
+    "n_folds": 10,
+    "random_seed": 42,
+    "training_configuration": {
+      "optimizer": "Adam",
+      "learning_rate": 0.0001,
+      "epochs_max": 60,
+      "batch_size": 8,
+      "early_stopping_patience": 15,
+      "early_stopping_monitor": "val_loss",
+      "decision_threshold": 0.5,
+      "dropout_rate": 0.0
+    }
+  },
+  "macro_fold_statistics": {
+    "accuracy": {
+      "mean": 0.5142857142857142,
+      "std": 0.053452248382484864,
+      "min": 0.42857142857142855,
+      "max": 0.5714285714285714,
+      "folds_computed": 10
+    },
+    "loss": {
+      "mean": 0.6756621217641892,
+      "std": 0.05339974993404047,
+      "min": 0.5157953555935512,
+      "max": 0.6990647327939589,
+      "folds_computed": 10
+    },
+    "roc_auc": {
+      "mean": 0.39583333333333337,
+      "std": 0.27763885414929473,
+      "min": 0.0,
+      "max": 0.8333333333333334,
+      "folds_computed": 10
+    },
+    "precision": {
+      "mean": 0.31,
+      "std": 0.2567496994414313,
+      "min": 0.0,
+      "max": 0.6,
+      "folds_computed": 10
+    },
+    "recall": {
+      "mean": 0.525,
+      "std": 0.4394598957811736,
+      "min": 0.0,
+      "max": 1.0,
+      "folds_computed": 10
+    },
+    "f1": {
+      "mean": 0.3860606060606061,
+      "std": 0.31739354013665355,
+      "min": 0.0,
+      "max": 0.7272727272727273,
+      "folds_computed": 10
+    }
+  },
+  "aggregate_oof_metrics": {
+    "loss": 0.6766474149877428,
+    "accuracy": 0.5135135135135135,
+    "precision": 0.5128205128205128,
+    "recall": 0.5405405405405406,
+    "f1": 0.5263157894736842,
+    "roc_auc": 0.49890430971512056,
+    "auc_note": null,
+    "threshold": 0.5,
+    "confusion_matrix": {
+      "true_positive": 20,
+      "false_positive": 19,
+      "true_negative": 18,
+      "false_negative": 17,
+      "matrix": [
+        [
+          18,
+          19
+        ],
+        [
+          17,
+          20
+        ]
+      ]
+    }
+  },
+  "aggregate_oof_probability_diagnostics": {
+    "min": 0.10641492158174515,
+    "max": 0.7889883518218994,
+    "mean": 0.5037688690464239,
+    "median": 0.501943051815033,
+    "std": 0.07085645944014343,
+    "unique_count": 67,
+    "fraction_near_05": 0.918918918918919,
+    "has_collapsed": false,
+    "collapse_assessment": "NORMAL: Predicted probabilities show responsive variation across inputs",
+    "class_breakdown": {
+      "class_0": {
+        "count": 37,
+        "min": 0.10641492158174515,
+        "max": 0.5870013236999512,
+        "mean": 0.4917496340097608,
+        "std": 0.06709649258116086
+      },
+      "class_1": {
+        "count": 37,
+        "min": 0.3812374770641327,
+        "max": 0.7889883518218994,
+        "mean": 0.515788104083087,
+        "std": 0.07245972916288405
+      }
+    }
+  }
+}

@@ -1,0 +1,842 @@
+{
+  "train": {
+    "split": "test1_train",
+    "sample_count": 50,
+    "positive_count": 25,
+    "negative_count": 25,
+    "loss": 0.12692697870954234,
+    "accuracy": 0.98,
+    "precision": 1.0,
+    "recall": 0.96,
+    "f1": 0.9795918367346939,
+    "roc_auc": 1.0,
+    "threshold": 0.5,
+    "confusion_matrix": {
+      "true_positive": 24,
+      "false_positive": 0,
+      "true_negative": 25,
+      "false_negative": 1,
+      "matrix": [
+        [
+          25,
+          0
+        ],
+        [
+          1,
+          24
+        ]
+      ]
+    },
+    "probability_diagnostics": {
+      "min": 0.013805228285491467,
+      "max": 0.990988552570343,
+      "mean": 0.5032784430496394,
+      "median": 0.45682232081890106,
+      "std": 0.4065794665763219,
+      "unique_count": 50,
+      "fraction_near_05": 0.02,
+      "has_collapsed": false,
+      "collapse_assessment": "No constant-output collapse detected; test-set probabilities show substantial variation across samples.",
+      "class_breakdown": {
+        "class_0": {
+          "count": 25,
+          "min": 0.013805228285491467,
+          "max": 0.44536226987838745,
+          "mean": 0.11334822144359351,
+          "std": 0.10426607378958527
+        },
+        "class_1": {
+          "count": 25,
+          "min": 0.4682823717594147,
+          "max": 0.990988552570343,
+          "mean": 0.8932086646556854,
+          "std": 0.1251045790368898
+        }
+      }
+    },
+    "sample_predictions": [
+      {
+        "sample_id": "pdb_00001dqj_B_A",
+        "pdb_id": "1DQJ",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9880052208900452,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_3CF0_B_C",
+        "pdb_id": "3CF0",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.021601485088467598,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2I07_A_B",
+        "pdb_id": "2I07",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.02097899094223976,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001nbz_B_A",
+        "pdb_id": "1NBZ",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.988112211227417,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001e6j_H_L",
+        "pdb_id": "1E6J",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9822343587875366,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2A74_E_D",
+        "pdb_id": "2A74",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.037573929876089096,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2V5H_E_K",
+        "pdb_id": "2V5H",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.16677285730838776,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001ejo_H_L",
+        "pdb_id": "1EJO",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9262243509292603,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001kc5_H_L",
+        "pdb_id": "1KC5",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9105038046836853,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2Z0J_B_D",
+        "pdb_id": "2Z0J",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.15495474636554718,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001jhl_H_L",
+        "pdb_id": "1JHL",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.951177179813385,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1U69_B_D",
+        "pdb_id": "1U69",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.0919874757528305,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001him_M_J",
+        "pdb_id": "1HIM",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9786420464515686,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1B7B_B_D",
+        "pdb_id": "1B7B",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.01561319176107645,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001hh6_B_A",
+        "pdb_id": "1HH6",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.8524611592292786,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001acy_H_L",
+        "pdb_id": "1ACY",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.7634980082511902,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1XEF_B_D",
+        "pdb_id": "1XEF",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.1700834184885025,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001kiq_B_A",
+        "pdb_id": "1KIQ",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.8985773921012878,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00004hkz_B_A",
+        "pdb_id": "4HKZ",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.7191956043243408,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1K6M_A_B",
+        "pdb_id": "1K6M",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.44536226987838745,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1QSJ_A_C",
+        "pdb_id": "1QSJ",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.03369223326444626,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2IYP_A_B",
+        "pdb_id": "2IYP",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.07050599902868271,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001bj1_H_L",
+        "pdb_id": "1BJ1",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.950150728225708,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1WM6_F_H",
+        "pdb_id": "1WM6",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.018422221764922142,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001bj1_K_J",
+        "pdb_id": "1BJ1",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9295530319213867,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2FK3_B_E",
+        "pdb_id": "2FK3",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.26717302203178406,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001ifh_H_L",
+        "pdb_id": "1IFH",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9699732661247253,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001cft_B_A",
+        "pdb_id": "1CFT",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.628083348274231,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001bog_B_A",
+        "pdb_id": "1BOG",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9309157133102417,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2P9R_A_B",
+        "pdb_id": "2P9R",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.27471408247947693,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1F17_A_B",
+        "pdb_id": "1F17",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.04742170125246048,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1UT5_A_B",
+        "pdb_id": "1UT5",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.07653491944074631,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2J5T_C_H",
+        "pdb_id": "2J5T",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.2620280683040619,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2JIJ_A_C",
+        "pdb_id": "2JIJ",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.16379353404045105,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2II3_A_C",
+        "pdb_id": "2II3",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.11985872685909271,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1YDM_A_C",
+        "pdb_id": "1YDM",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.11668385565280914,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001ce1_H_L",
+        "pdb_id": "1CE1",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.8148746490478516,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_3B60_B_A",
+        "pdb_id": "3B60",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.015265214256942272,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001nby_B_A",
+        "pdb_id": "1NBY",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9850436449050903,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2DVW_B_A",
+        "pdb_id": "2DVW",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.07541535794734955,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2P9E_C_D",
+        "pdb_id": "2P9E",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.013805228285491467,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001j1p_H_L",
+        "pdb_id": "1J1P",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.990988552570343,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1ZVF_A_B",
+        "pdb_id": "1ZVF",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.08382522314786911,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001him_L_H",
+        "pdb_id": "1HIM",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9790077805519104,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1IXS_B_A",
+        "pdb_id": "1IXS",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.06963778287172318,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00008q6j_D_C",
+        "pdb_id": "8Q6J",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9279500246047974,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00008q6j_B_A",
+        "pdb_id": "8Q6J",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9721466898918152,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001hh9_B_A",
+        "pdb_id": "1HH9",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.8797073364257812,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001a3r_H_L",
+        "pdb_id": "1A3R",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9449081420898438,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001cfs_B_A",
+        "pdb_id": "1CFS",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.4682823717594147,
+        "pred_label": 0,
+        "correct": false
+      }
+    ]
+  },
+  "validation": {
+    "split": "test1_val",
+    "sample_count": 12,
+    "positive_count": 6,
+    "negative_count": 6,
+    "loss": 0.3190119508764327,
+    "accuracy": 0.8333333333333334,
+    "precision": 0.8333333333333334,
+    "recall": 0.8333333333333334,
+    "f1": 0.8333333333333334,
+    "roc_auc": 0.9444444444444444,
+    "threshold": 0.5,
+    "confusion_matrix": {
+      "true_positive": 5,
+      "false_positive": 1,
+      "true_negative": 5,
+      "false_negative": 1,
+      "matrix": [
+        [
+          5,
+          1
+        ],
+        [
+          1,
+          5
+        ]
+      ]
+    },
+    "probability_diagnostics": {
+      "min": 0.022463519126176834,
+      "max": 0.9727160930633545,
+      "mean": 0.5006358483806252,
+      "median": 0.5097758024930954,
+      "std": 0.40462115247984504,
+      "unique_count": 12,
+      "fraction_near_05": 0.08333333333333333,
+      "has_collapsed": false,
+      "collapse_assessment": "No constant-output collapse detected; test-set probabilities show substantial variation across samples.",
+      "class_breakdown": {
+        "class_0": {
+          "count": 6,
+          "min": 0.022463519126176834,
+          "max": 0.8651795387268066,
+          "mean": 0.19209618059297404,
+          "std": 0.3019942607050617
+        },
+        "class_1": {
+          "count": 6,
+          "min": 0.45799776911735535,
+          "max": 0.9727160930633545,
+          "mean": 0.8091755161682764,
+          "std": 0.21410877462731626
+        }
+      }
+    },
+    "sample_predictions": [
+      {
+        "sample_id": "pdb_00001mlc_D_C",
+        "pdb_id": "1MLC",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9539011716842651,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1YZ5_A_B",
+        "pdb_id": "1YZ5",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.09110955148935318,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1XNI_A_E",
+        "pdb_id": "1XNI",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.8651795387268066,
+        "pred_label": 1,
+        "correct": false
+      },
+      {
+        "sample_id": "ppi_2ICE_E_D",
+        "pdb_id": "2ICE",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.04533456265926361,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00008pwh_B_A",
+        "pdb_id": "8PWH",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9705246090888977,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1HTR_P_B",
+        "pdb_id": "1HTR",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.08612658083438873,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1SXJ_D_E",
+        "pdb_id": "1SXJ",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.022463519126176834,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001e4x_H_L",
+        "pdb_id": "1E4X",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.5615538358688354,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2Q3S_C_D",
+        "pdb_id": "2Q3S",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.042363330721855164,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001e4x_I_M",
+        "pdb_id": "1E4X",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.45799776911735535,
+        "pred_label": 0,
+        "correct": false
+      },
+      {
+        "sample_id": "pdb_00008pwh_D_C",
+        "pdb_id": "8PWH",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9383596181869507,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001mlc_B_A",
+        "pdb_id": "1MLC",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9727160930633545,
+        "pred_label": 1,
+        "correct": true
+      }
+    ]
+  },
+  "test": {
+    "split": "test1_test",
+    "sample_count": 12,
+    "positive_count": 6,
+    "negative_count": 6,
+    "loss": 0.3374687194514662,
+    "accuracy": 0.75,
+    "precision": 0.7142857142857143,
+    "recall": 0.8333333333333334,
+    "f1": 0.7692307692307692,
+    "roc_auc": 0.9444444444444445,
+    "threshold": 0.5,
+    "confusion_matrix": {
+      "true_positive": 5,
+      "false_positive": 2,
+      "true_negative": 4,
+      "false_negative": 1,
+      "matrix": [
+        [
+          4,
+          2
+        ],
+        [
+          1,
+          5
+        ]
+      ]
+    },
+    "probability_diagnostics": {
+      "min": 0.03130644932389259,
+      "max": 0.9537995457649231,
+      "mean": 0.5954385899628202,
+      "median": 0.5498072504997253,
+      "std": 0.31625071808535543,
+      "unique_count": 12,
+      "fraction_near_05": 0.08333333333333333,
+      "has_collapsed": false,
+      "collapse_assessment": "No constant-output collapse detected; test-set probabilities show substantial variation across samples.",
+      "class_breakdown": {
+        "class_0": {
+          "count": 6,
+          "min": 0.03130644932389259,
+          "max": 0.5695837736129761,
+          "mean": 0.34546027642985183,
+          "std": 0.17713710324445495
+        },
+        "class_1": {
+          "count": 6,
+          "min": 0.3792225122451782,
+          "max": 0.9537995457649231,
+          "mean": 0.8454169034957886,
+          "std": 0.20898125647912816
+        }
+      }
+    },
+    "sample_predictions": [
+      {
+        "sample_id": "pdb_00001kir_B_A",
+        "pdb_id": "1KIR",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9407467842102051,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2DHR_C_B",
+        "pdb_id": "2DHR",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.28154000639915466,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_1GHQ_A_B",
+        "pdb_id": "1GHQ",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.5695837736129761,
+        "pred_label": 1,
+        "correct": false
+      },
+      {
+        "sample_id": "ppi_1OFH_C_H",
+        "pdb_id": "1OFH",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.5300307273864746,
+        "pred_label": 1,
+        "correct": false
+      },
+      {
+        "sample_id": "ppi_1XV2_C_D",
+        "pdb_id": "1XV2",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.3491307497024536,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001hi6_B_A",
+        "pdb_id": "1HI6",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9537995457649231,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001e4w_H_L",
+        "pdb_id": "1E4W",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.3792225122451782,
+        "pred_label": 0,
+        "correct": false
+      },
+      {
+        "sample_id": "ppi_1XXI_B_A",
+        "pdb_id": "1XXI",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.03130644932389259,
+        "pred_label": 0,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001g7m_B_A",
+        "pdb_id": "1G7M",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9445005655288696,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00002igf_H_L",
+        "pdb_id": "2IGF",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9458261728286743,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "pdb_00001hin_H_L",
+        "pdb_id": "1HIN",
+        "true_label": 1,
+        "class_type": "antibody_antigen",
+        "pred_probability": 0.9084058403968811,
+        "pred_label": 1,
+        "correct": true
+      },
+      {
+        "sample_id": "ppi_2J4Y_A_B",
+        "pdb_id": "2J4Y",
+        "true_label": 0,
+        "class_type": "general_ppi",
+        "pred_probability": 0.31116995215415955,
+        "pred_label": 0,
+        "correct": true
+      }
+    ]
+  }
+}

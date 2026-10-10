@@ -1,0 +1,52 @@
+========================================================================
+PHASE 9: TEST 1 SCIENTIFIC EVALUATION REPORT
+Task: Antibody-Antigen vs General Protein-Protein Interaction (PPI)
+========================================================================
+Positive Class (1): 37 Antibody-Antigen complexes (31 unique PDBs, SAbDab)
+Negative Class (0): 37 General PPI complexes (37 unique PDBs, 3did)
+Total Samples:      74 across 68 unique PDBs
+Train Partition:    50 samples (25 Pos, 25 Neg; 47 PDBs)
+Val Partition:      12 samples (6 Pos, 6 Neg; 9 PDBs)
+Test Partition:     12 samples (6 Pos, 6 Neg; 12 PDBs)
+PDB Overlap:        Train-Val=0, Train-Test=0, Val-Test=0 (PDB-level disjoint: True)
+Random Seed:        42
+
+------------------------------------------------------------------------
+1. HELD-OUT TEST SPLIT EVALUATION RESULTS (N = 12):
+------------------------------------------------------------------------
+Accuracy:        75.00% (9/12)
+ROC-AUC:         0.9444
+Precision:       0.7143
+Recall:          0.8333
+F1-Score:        0.7692
+Loss (BCE):      0.3375
+Confusion Matrix: TP=5, FP=2, TN=4, FN=1
+
+------------------------------------------------------------------------
+2. PROBABILITY DISTRIBUTION STATISTICS:
+------------------------------------------------------------------------
+Min Probability:     0.0313
+Max Probability:     0.9538
+Mean Probability:    0.5954
+Median Probability:  0.5498
+Standard Deviation:  0.3163
+Unique Values:       12
+Collapse Assessment: No constant-output collapse detected; test-set probabilities show substantial variation across samples.
+
+------------------------------------------------------------------------
+3. COMPARISON WITH PUBLISHED PAPER (ZHANG ET AL. 2024):
+------------------------------------------------------------------------
+Zhang et al. Test 1 (Full 1,215 Ab-Ag vs 3,218 3did PPI):
+  - Published Accuracy: ~99.84%
+  - Published ROC-AUC:  ~0.9999
+Local Reproducible Test 1 (74 samples, 37 Ab-Ag vs 37 General PPI):
+  - Measured Accuracy:  75.00%
+  - Measured ROC-AUC:   0.9444
+Contextual Analysis & Methodological Differences:
+  - The local evaluation contains 74 samples across 68 unique PDB structures, much smaller than the paper's ~4,433 complex corpus.
+  - The local sampling, clustering, and PDB-level split procedures differ from the full paper dataset.
+  - Therefore, the local result cannot be treated as a direct replication or proof of the published 99.84% / 0.9999 values.
+  - The representation may encode structural and compositional differences between antibody paratopes and general PPI interfaces.
+  - The local Test 1 evaluation achieved strong separation on this held-out dataset. However, because the dataset contains 74 samples and 31 unique positive PDB structures, the result should not be interpreted as a general estimate of performance across the entire antibody–antigen and general PPI structural universe.
+
+========================================================================
