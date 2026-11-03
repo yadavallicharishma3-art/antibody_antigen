@@ -1,0 +1,12 @@
+{
+  "fingerprint": "8d768cd8cd1af17b",
+  "sources": [
+    "C:\\Users\\yadavalli charishma\\ABAG\\pdb_4960list.txt",
+    "C:\\Users\\yadavalli charishma\\ABAG\\ppi_structures.zip",
+    "C:\\Users\\yadavalli charishma\\Downloads\\splits\\splits_final.zip"
+  ],
+  "cutoff_angstrom": 5.0,
+  "seed": 42,
+  "batch_size": 100,
+  "note": "Each completed batch is stored atomically and can be reused after an interruption."
+}
