@@ -6,6 +6,20 @@
   const panels = [...document.querySelectorAll("[data-view-panel]")];
   const subviews = [...document.querySelectorAll("[data-subview-panel]")];
   const aaFallback = "ACDEFGHIKLMNPQRSTVWY".split("");
+  const aminoAcids = {
+    A: ["ALA", "Alanine"], C: ["CYS", "Cysteine"], D: ["ASP", "Aspartic acid"],
+    E: ["GLU", "Glutamic acid"], F: ["PHE", "Phenylalanine"], G: ["GLY", "Glycine"],
+    H: ["HIS", "Histidine"], I: ["ILE", "Isoleucine"], K: ["LYS", "Lysine"],
+    L: ["LEU", "Leucine"], M: ["MET", "Methionine"], N: ["ASN", "Asparagine"],
+    P: ["PRO", "Proline"], Q: ["GLN", "Glutamine"], R: ["ARG", "Arginine"],
+    S: ["SER", "Serine"], T: ["THR", "Threonine"], V: ["VAL", "Valine"],
+    W: ["TRP", "Tryptophan"], Y: ["TYR", "Tyrosine"]
+  };
+  function aminoAcidLabel(value) {
+    const code = String(value || "").trim().toUpperCase();
+    const match = Object.entries(aminoAcids).find(([one, names]) => one === code || names[0] === code);
+    return match ? { short: match[1][0], full: match[1][1] } : { short: code || "UNK", full: code || "Unknown amino acid" };
+  }
   let currentView = "home";
   let currentSubview = "";
   let currentResult = null;
@@ -66,6 +80,132 @@
     byId("mobile-menu")?.setAttribute("aria-expanded", "false");
   }
 
+  let learningContentLoaded = false;
+
+  function formatLearningAnswer(answer) {
+    let markup = "";
+    let paragraph = [];
+    let listType = "";
+
+    function finishParagraph() {
+      if (!paragraph.length) return;
+      markup += "<p>" + esc(paragraph.join(" ")) + "</p>";
+      paragraph = [];
+    }
+    function finishList() {
+      if (!listType) return;
+      markup += "</" + listType + ">";
+      listType = "";
+    }
+
+    answer.split(/\r?\n/).forEach(line => {
+      const cleanLine = line.trim();
+      if (!cleanLine) {
+        finishParagraph();
+        finishList();
+        return;
+      }
+      const item = cleanLine.match(/^(- |\d+\. )(.*)$/);
+      if (item) {
+        finishParagraph();
+        const nextType = /^\d/.test(item[1]) ? "ol" : "ul";
+        if (listType !== nextType) {
+          finishList();
+          listType = nextType;
+          markup += "<" + listType + ">";
+        }
+        markup += "<li>" + esc(item[2]) + "</li>";
+      } else {
+        finishList();
+        paragraph.push(cleanLine);
+      }
+    });
+    finishParagraph();
+    finishList();
+    return markup;
+  }
+
+  async function loadLearningContent() {
+    const container = byId("learning-chapters");
+    if (!container || learningContentLoaded) return;
+    container.textContent = "Loading lessons…";
+
+    try {
+      const response = await fetch("/static/antibody_antigen_learning_content.txt");
+      if (!response.ok) throw new Error("Learning content file could not be loaded.");
+      const content = await response.text();
+      const chapterMatches = [...content.matchAll(/^CHAPTER \d+: (.+)$/gm)];
+      const questionMatches = [...content.matchAll(/^(\d+)\. (What|How) ([^\r\n]+)$/gm)];
+      if (chapterMatches.length !== 3 || questionMatches.length !== 8) {
+        throw new Error("The learning content file does not contain the expected three chapters and eight questions.");
+      }
+
+      const sourceTitles = {
+        "https://www.ncbi.nlm.nih.gov/books/NBK10757/": "NCBI — Immunobiology",
+        "https://www.ncbi.nlm.nih.gov/books/NBK26884/": "NCBI — B Cells and Antibodies",
+        "https://www.ncbi.nlm.nih.gov/books/NBK27124/": "NCBI — The Recognition and Effector Mechanisms of Adaptive Immunity",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC3792396/": "Sela-Culang et al. (2013) — The Structural Basis of Antibody-Antigen Recognition",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC3443979/": "Ramaraj et al. (2012) — Antigen-antibody interface properties",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC9307644/": "Peng et al. (2022) — Antibody CDR amino acids underlying recognition of diverse protein antigens"
+      };
+
+      const questionData = questionMatches.map((match, index) => {
+        const bodyStart = match.index + match[0].length;
+        const nextQuestion = questionMatches[index + 1]?.index ?? content.length;
+        const nextChapter = chapterMatches.find(chapter => chapter.index > match.index)?.index ?? content.length;
+        const libraryStart = content.indexOf("SOURCE LIBRARY");
+        const fullBody = content.slice(bodyStart, Math.min(nextQuestion, nextChapter, libraryStart < 0 ? content.length : libraryStart)).trim();
+        const sourceStartMatch = fullBody.match(/^Sources?:\s*$|^Source\s+[–-]/m);
+        const sourceBlock = sourceStartMatch ? fullBody.slice(sourceStartMatch.index) : "";
+        const answer = sourceStartMatch ? fullBody.slice(0, sourceStartMatch.index).trim() : fullBody;
+        const urls = [...sourceBlock.matchAll(/https?:\/\/[^\s]+/g)].map(item => item[0]);
+        const owningChapter = [...chapterMatches].reverse().find(chapter => chapter.index < match.index);
+
+        return {
+          title: match[2] + " " + match[3],
+          chapterTitle: owningChapter?.[1] || "",
+          answer,
+          urls
+        };
+      });
+
+      const chapters = chapterMatches.map((chapter, index) => {
+        const chapterQuestions = questionData.filter(question => question.chapterTitle === chapter[1]);
+        const questionsHtml = chapterQuestions.map(question => {
+          const links = question.urls.map(url =>
+            '<a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' +
+            esc(sourceTitles[url] || url) + '</a>'
+          ).join("; ");
+          const sources = links ? '<p class="learning-sources"><strong>Research sources:</strong> ' + links + '</p>' : "";
+          return '<details class="learning-question"><summary>' + esc(question.title) +
+            '</summary><div class="learning-answer">' + formatLearningAnswer(question.answer) +
+            sources + '</div></details>';
+        }).join("");
+        return '<section class="learning-chapter content-card" aria-labelledby="learning-chapter-' +
+          (index + 1) + '"><span class="card-index">CHAPTER 0' + (index + 1) +
+          '</span><h2 id="learning-chapter-' + (index + 1) + '">' + esc(chapter[1]) +
+          '</h2>' + questionsHtml + '</section>';
+      });
+
+      container.innerHTML = chapters.join("");
+      container.querySelectorAll(".learning-question").forEach(question => {
+        question.addEventListener("toggle", () => {
+          if (!question.open) return;
+          container.querySelectorAll(".learning-question[open]").forEach(other => {
+            if (other !== question) other.open = false;
+          });
+        });
+      });
+      learningContentLoaded = true;
+    } catch (error) {
+      container.innerHTML = "";
+      const message = document.createElement("p");
+      message.setAttribute("role", "alert");
+      message.textContent = error.message || "Learning content could not be loaded.";
+      container.appendChild(message);
+    }
+  }
+
   function navigateSubview(name) {
     const target = subviews.find(panel => panel.dataset.subviewPanel === name);
     if (!target) return;
@@ -77,6 +217,7 @@
     document.querySelectorAll("[data-subnav-group]").forEach(nav => show(nav, nav.dataset.subnavGroup === group));
     const label = byId("current-section-label");
     if (label) label.textContent = name.replace("beginner-", "").replace("specialised-", "").replaceAll("-", " ").toUpperCase();
+    if (name === "beginner-learn") loadLearningContent();
     if (name === "specialised-heatmap") drawHeatmap();
     if (name === "specialised-viewer") requestAnimationFrame(() => viewer?.resize());
   }
@@ -127,7 +268,7 @@
       const payload = new FormData();
       if (id) payload.append("pdb_id", id);
       else payload.append("structure", file);
-      setMessage("Submitting the structure for analysis…", "info");
+      setMessage("Analysis is running…", "info");
       const progressPanel = byId("analysis-progress") || form.parentElement?.querySelector("[data-progress-panel]");
       show(progressPanel);
       form.querySelectorAll("button[type=submit]").forEach(button => { button.disabled = true; button.dataset.oldLabel = button.textContent; button.textContent = "Analysing…"; });
@@ -140,7 +281,7 @@
         currentStructure = id ? { kind: "pdb", pdbId: result.pdb_id || id } : { kind: "upload", file, name: file.name };
         renderResult(result);
         saveHistory(result, currentStructure);
-        setMessage(result.message || "Structure analysis completed.", "success");
+        setMessage("Analysis completed successfully.", "success");
         const chosenMode = form.querySelector('[name="analysis_mode"]')?.value || form.dataset.afterAnalysis || "beginner";
         navigate(chosenMode === "specialised" ? "specialised" : "beginner", chosenMode === "specialised" ? "specialised-overview" : "beginner-analyse");
       } catch (error) {
@@ -163,7 +304,7 @@
     const positive = Number(prediction.label) === 1;
     const className = prediction.class_name || (positive ? "Antibody–Antigen Interaction" : "General Protein–Protein Interaction");
     text("beginner-result-title", className);
-    text("beginner-result-text", prediction.interpretation || (positive ? "The CNN classified this structure as an antibody–antigen interaction." : "The CNN classified this structure as a general protein–protein interaction."));
+    text("beginner-result-text", prediction.interpretation || (positive ? "The structure was classified as an antibody–antigen interaction." : "The structure was classified as a general protein–protein interaction."));
     const resultMeta = byId("beginner-result-meta");
     if (resultMeta) resultMeta.textContent = `${result.pdb_id || "Uploaded structure"} · Partner A: ${chainsText(prediction.partner_a_chains)} · Partner B: ${chainsText(prediction.partner_b_chains)}`;
     show(byId("beginner-result-explainer"));
@@ -183,7 +324,7 @@
     text("prediction-mark", String(Number(prediction.label)));
     const probability = Number(prediction.probability_antibody_antigen);
     text("prediction-probability", Number.isFinite(probability) ? `${(probability * 100).toFixed(1)}%` : "Not returned");
-    text("prediction-interpretation", prediction.interpretation || "This model score is a classifier output, not an experimental confirmation or physical binding probability.");
+    text("prediction-interpretation", prediction.interpretation || "This classification is not experimental confirmation of physical binding.");
     text("heatmap-title", `${result.pdb_id || "Uploaded structure"} · normalized interface feature`);
     text("chain-table-title", result.pdb_id || currentStructure?.name || "Uploaded structure");
     const ranges = meta.partner_a_residue_ranges || meta.partner_a_interface_residue_ranges;
@@ -283,9 +424,11 @@
     const col = Math.max(0, Math.min(19, Math.floor((event.clientX - rect.left) / rect.width * 20)));
     const row = Math.max(0, Math.min(19, Math.floor((event.clientY - rect.top) / rect.height * 20)));
     const aa = currentResult.amino_acid_order || aaFallback;
+    const rowAminoAcid = aminoAcidLabel(aa[row]);
+    const columnAminoAcid = aminoAcidLabel(aa[col]);
     const value = Number(currentResult.matrix[row][col]);
     const inspector = byId("cell-inspector");
-    if (inspector) inspector.innerHTML = `<span class="card-index">CELL INSPECTOR</span><h3>${esc(aa[row])} × ${esc(aa[col])}</h3><p>Row ${row + 1} · Column ${col + 1}</p><div class="cell-detail"><span>Actual matrix value</span><strong>${Number.isFinite(value) ? value.toFixed(6) : "Not returned"}</strong><p>${row === col ? "Diagonal is defined as zero." : row > col ? "Lower triangle: Partner A intrapartner interface contacts." : "Upper triangle: Partner B intrapartner interface contacts."}</p></div>`;
+    if (inspector) inspector.innerHTML = `<span class="card-index">CELL INSPECTOR</span><h3>${esc(rowAminoAcid.short)} × ${esc(columnAminoAcid.short)}</h3><p>${esc(rowAminoAcid.full)} × ${esc(columnAminoAcid.full)}</p><p>Row ${row + 1} · Column ${col + 1}</p><div class="cell-detail"><span>Actual matrix value</span><strong>${Number.isFinite(value) ? value.toFixed(6) : "Not returned"}</strong><p>${row === col ? "Diagonal is defined as zero." : row > col ? "Lower triangle: Partner A intrapartner interface contacts." : "Upper triangle: Partner B intrapartner interface contacts."}</p></div>`;
   });
 
   function updateViewerLabels(prediction = {}) {
@@ -402,29 +545,12 @@
   byId("download-result")?.addEventListener("click", () => { if (currentResult) download(`${currentResult.pdb_id || "structure"}-prediction.json`, JSON.stringify(currentResult, null, 2), "application/json"); });
   byId("download-matrix")?.addEventListener("click", () => {
     if (!currentResult?.matrix) return;
-    const aa = currentResult.amino_acid_order || aaFallback;
-    const csv = [",${aa.join(",")}", ...currentResult.matrix.map((row, i) => `${aa[i]},${row.join(",")}`)].join("\n");
+    const aa = (currentResult.amino_acid_order || aaFallback).map(code => aminoAcidLabel(code).short);
+    const csv = [`,${aa.join(",")}`, ...currentResult.matrix.map((row, i) => `${aa[i]},${row.join(",")}`)].join("\n");
     download(`${currentResult.pdb_id || "structure"}-matrix.csv`, csv, "text/csv");
   });
 
-  const topics = {
-    antibody: ["Antibody", "An antibody is an immune protein. It has variable regions that can recognize molecular surfaces. This classifier uses structure-derived features and does not itself determine therapeutic suitability."],
-    antigen: ["Antigen", "An antigen is the molecule or molecular part recognized by an antibody. Here, the submitted structure is treated as a candidate interacting pair; chain labels do not by themselves prove biological identity."],
-    interface: ["Interaction interface", "An interface is the set of residues near a partner across a structure-based distance cutoff. The backend detects cross-partner heavy-atom contacts to choose interface residues."],
-    chains: ["Protein chains", "A structure may contain several chains. Partner A and Partner B are the chain groups selected by the backend. They are labels for the detected pair, not guaranteed antibody/antigen labels."],
-    cdr: ["CDR regions", "CDRs are antibody variable-loop regions involved in antigen recognition. The current API does not return CDR residue annotations, and the model feature uses all selected interface residues."],
-    pdb: ["PDB and mmCIF", "PDB and mmCIF files describe three-dimensional macromolecular structures. You can enter an ID for RCSB retrieval or upload a local coordinate file."],
-    matrix: ["20×20 interaction matrix", "The matrix summarizes normalized intrapartner side-chain contact counts among interface residues. Partner A is in the lower triangle; Partner B is in the upper triangle; the diagonal is zero. It is a CNN input feature, not a physical binding-energy map."],
-    cnn: ["CNN prediction", "A convolutional neural network receives the 20×20 matrix and outputs one of two dataset-defined classes. A class score is not an experimental validation or a probability that the proteins bind in reality."]
-  };
-  document.querySelectorAll("[data-topic]").forEach(button => button.addEventListener("click", () => {
-    document.querySelectorAll("[data-topic]").forEach(item => item.classList.toggle("active", item === button));
-    const [title, description] = topics[button.dataset.topic] || ["", ""];
-    const article = byId("topic-content");
-    if (article) article.innerHTML = `<span class="card-index">LEARN</span><h2>${esc(title)}</h2><p>${esc(description)}</p>`;
-  }));
-
-  document.querySelector('[data-topic="antibody"]')?.click();
+  document.querySelectorAll(".learning-question").forEach(question => question.addEventListener("toggle", () => { if(question.open) document.querySelectorAll(".learning-question[open]").forEach(other => { if(other!==question) other.open=false; }); }));
 
   renderHistory();
   navigate("home");

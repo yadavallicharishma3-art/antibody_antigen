@@ -1,0 +1,186 @@
+LEARNING MODE: ANTIBODY–ANTIGEN BIOLOGY
+========================================
+
+Three beginner-friendly chapters. Each question can be shown as a dropdown. When opened, display its explanation and source links.
+
+CHAPTER 1: THE BASICS OF IMMUNOLOGY
+===================================
+
+1. What is the immune system?
+
+The immune system is the body's defence system. It helps protect us from harmful microorganisms such as viruses, bacteria and fungi.
+
+There are two major parts:
+- Innate immunity: the body's first line of defence. It responds quickly and does not target only one specific pathogen.
+- Adaptive immunity: a specialised defence system that responds to particular antigens and can develop immunological memory.
+
+Source – NCBI, Immunobiology:
+https://www.ncbi.nlm.nih.gov/books/NBK10757/
+
+
+2. What are antibodies and antigens?
+
+An antigen is a substance that can be recognised by components of the immune system. Proteins on the surface of viruses and bacteria can act as antigens.
+
+An antibody is a specialised protein produced and released by plasma cells. It recognises and binds to a particular antigen.
+
+Important terms:
+- Antigen: the target recognised by the immune system.
+- Antibody: a protein that recognises and binds to an antigen.
+- Epitope: the specific region of an antigen recognised by an antibody.
+- Paratope: the antigen-binding region of an antibody.
+
+Remember: An antigen is what is recognised; an antibody is what recognises it.
+
+Source – NCBI, B Cells and Antibodies:
+https://www.ncbi.nlm.nih.gov/books/NBK26884/
+
+
+3. How does our body produce antibodies?
+
+Antibodies are produced by plasma cells, which develop from B lymphocytes (B cells).
+
+The basic process:
+1. A B cell recognises an antigen using a receptor on its surface.
+2. The B cell receives the signals needed for activation.
+3. The activated B cell multiplies.
+4. Some resulting cells develop into plasma cells.
+5. Plasma cells release antibodies that recognise the same antigen.
+
+Some activated B cells become memory B cells. They help the body respond more quickly if it encounters the same antigen again.
+
+Remember:
+- B cells recognise antigens.
+- Plasma cells produce and release antibodies.
+- Memory B cells contribute to immune memory.
+
+Source – NCBI, B Cells and Antibodies:
+https://www.ncbi.nlm.nih.gov/books/NBK26884/
+
+
+CHAPTER 2: ANTIBODY RECOGNITION AND BINDING
+===========================================
+
+4. How does an antibody recognise an antigen?
+
+An antibody recognises an antigen through a specialised binding region. The antibody's binding region interacts with a particular region on the antigen.
+
+The antigen region is called the epitope. The antibody region that binds it is called the paratope.
+
+Recognition depends on:
+- Shape compatibility.
+- Amino acid composition.
+- Charge distribution.
+- Chemical properties of the interacting surfaces.
+
+Important: Recognition is not based on shape alone. Chemical properties also help determine whether the two surfaces interact.
+
+Source – Sela-Culang et al. (2013), The Structural Basis of Antibody-Antigen Recognition:
+https://pmc.ncbi.nlm.nih.gov/articles/PMC3792396/
+
+
+5. How does an antibody bind to an antigen?
+
+When an antibody recognises a compatible antigen, the two molecules can bind and form an antibody–antigen complex.
+
+The binding is mainly stabilised by non-covalent molecular interactions:
+- Hydrogen bonds: attractions between suitable atoms in molecules.
+- Electrostatic interactions: attractions or repulsions between charged groups.
+- Van der Waals forces: weak attractions between nearby atoms.
+- Hydrophobic interactions: non-polar surfaces associate in ways that reduce their exposure to water.
+
+Binding affinity describes how strongly an antibody binds to an antigenic site. Higher affinity generally means stronger binding.
+
+Sources:
+NCBI – B Cells and Antibodies:
+https://www.ncbi.nlm.nih.gov/books/NBK26884/
+
+Ramaraj et al. (2012) – Antigen-antibody interface properties:
+https://pmc.ncbi.nlm.nih.gov/articles/PMC3443979/
+
+
+6. What happens after an antibody binds to an antigen?
+
+Antibody binding can help the immune system respond in several ways.
+
+- Neutralisation: antibodies can block viruses or toxins from interacting with or entering cells.
+- Opsonisation: antibodies coat pathogens and make them easier for immune cells to recognise and engulf.
+- Complement activation: certain antibodies can activate complement proteins, which help eliminate pathogens.
+
+Remember: Antibodies do not always destroy pathogens directly. They can help other parts of the immune system eliminate them.
+
+Source – NCBI, The Recognition and Effector Mechanisms of Adaptive Immunity:
+https://www.ncbi.nlm.nih.gov/books/NBK27124/
+
+
+CHAPTER 3: UNDERSTANDING ANTIBODY STRUCTURE
+===========================================
+
+7. What is the structure of an antibody?
+
+A typical antibody is a Y-shaped protein made up of four protein chains:
+- Two identical heavy chains.
+- Two identical light chains.
+
+The chains are connected by disulfide bonds and other interactions.
+
+Important parts:
+- Fab region: the two arms of the antibody. They contain the antigen-binding sites.
+- Fc region: the stem of the antibody. It interacts with other components of the immune system.
+- Variable regions: regions that differ between antibodies and contribute to antigen recognition.
+- Constant regions: regions that are more similar within an antibody class and help determine antibody functions.
+
+Both heavy and light chains contribute to the antigen-binding sites.
+
+Source – NCBI, B Cells and Antibodies:
+https://www.ncbi.nlm.nih.gov/books/NBK26884/
+
+
+8. What are CDR regions?
+
+CDR stands for Complementarity-Determining Region. CDRs are variable loops found in the antigen-binding regions of antibodies.
+
+Each typical antibody has six CDR loops:
+- Heavy chain: CDR-H1, CDR-H2 and CDR-H3.
+- Light chain: CDR-L1, CDR-L2 and CDR-L3.
+
+Why are CDRs important?
+- They form a major part of the antigen-binding surface.
+- Their amino acid sequences vary between antibodies.
+- They help determine which antigens an antibody can recognise.
+- They contribute to the specificity of antibody–antigen interactions.
+
+Why is CDR-H3 important?
+CDR-H3 is often particularly important because it is highly variable and can make significant contributions to antigen recognition. However, all six CDRs can contribute to binding.
+
+Connection to structural analysis:
+Researchers study CDRs because differences in their amino acid sequences can change the antibody's binding surface and influence antigen recognition.
+
+Sources:
+Sela-Culang et al. (2013) – The Structural Basis of Antibody-Antigen Recognition:
+https://pmc.ncbi.nlm.nih.gov/articles/PMC3792396/
+
+Peng et al. (2022) – Antibody CDR amino acids underlying recognition of diverse protein antigens:
+https://pmc.ncbi.nlm.nih.gov/articles/PMC9307644/
+
+
+SOURCE LIBRARY
+==============
+
+NCBI – Immunobiology:
+https://www.ncbi.nlm.nih.gov/books/NBK10757/
+
+NCBI – B Cells and Antibodies:
+https://www.ncbi.nlm.nih.gov/books/NBK26884/
+
+NCBI – The Recognition and Effector Mechanisms of Adaptive Immunity:
+https://www.ncbi.nlm.nih.gov/books/NBK27124/
+
+Sela-Culang et al. (2013) – The Structural Basis of Antibody-Antigen Recognition:
+https://pmc.ncbi.nlm.nih.gov/articles/PMC3792396/
+
+Ramaraj et al. (2012) – Antigen-antibody interface properties:
+https://pmc.ncbi.nlm.nih.gov/articles/PMC3443979/
+
+Peng et al. (2022) – Antibody CDR amino acids underlying recognition of diverse protein antigens:
+https://pmc.ncbi.nlm.nih.gov/articles/PMC9307644/
