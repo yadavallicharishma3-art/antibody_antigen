@@ -50,6 +50,12 @@ This is an intrapartner interface feature representation. The cross-partner cont
 
 The fixed amino-acid order is `ACDEFGHIKLMNPQRSTVWY`. For an amino-acid pair with indices `i` and `j`, the antigen/general partner's unordered count is stored at `[min(i,j), max(i,j)]` in the upper triangle. The antibody/first partner's count is stored at `[max(i,j), min(i,j)]` in the lower triangle. The diagonal is zero. Since the diagonal must remain zero, same-amino-acid contacts are tracked in metadata and omitted from the matrix. For each partner independently, every represented off-diagonal cell is divided by that partner's represented total; each triangle sums to 1. A sample is rejected if either partner has no represented contact counts.
 
+## IMGT CDR annotation
+
+For structures represented in the supplied `splits_final.zip`, the CDR view uses its precomputed heavy/light-chain IMGT numbering and CDR sequences. It aligns each available structure chain to that numbering using a global sequence alignment, then reports the observed CDR-H1/H2/H3 and CDR-L1/L2/L3 residue counts, sequences, original structure residue identifiers, and interface-residue overlap. The IMGT ranges are 27–38, 56–65, and 105–117, including insertion positions. Counts describe residues actually present in the analyzed coordinates, so unresolved residues are not counted. This annotation is separate from the CNN; its architecture, weights, and Test 1 prediction are unchanged. [IMGT region definitions](https://www.imgt.org/textes/IMGTScientificChart/Nomenclature/IMGT-FRCDRdefinition.html)
+
+If a PDB ID is not in the local metadata, the backend queries the [SAbDab2 API](https://sabdab.opig.stats.ox.ac.uk/api/docs) for IMGT-numbered antibody chains and CDR sequences. When SAbDab2 has the entry, it downloads and validates the full IMGT-numbered mmCIF, caches it in `data/processed/`, and the CDR page displays the mapped counts with a download link to that structure. This fallback requires an internet connection and a PDB ID; a file upload whose filename is not its PDB ID may not be discoverable in SAbDab2. If neither source has a matching antibody entry, the API returns an explicit status rather than inventing CDR results. No ANARCI or HMMER installation is needed.
+
 ## Setup
 
 Use Python 3.10–3.12 in a virtual environment. TensorFlow wheels depend on operating system and Python version; use a supported Python runtime if installation reports that no wheel is available.
@@ -62,12 +68,18 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Default data paths point to the supplied files on the computer used to prepare this project. On another machine, set:
+Dataset paths default to the project-relative `data/raw/` directory. Put the source files there with these names:
+
+- `pdb_4960.txt` — 3did PPI interface records
+- `ppi_structures.zip` — PPI coordinate structures
+- `splits_final.zip` — antibody–antigen metadata and structures
+
+All three source files are present in this project copy's `data/raw/` directory. On another computer, place them there or set optional path overrides in PowerShell:
 
 ```powershell
-$env:PPI_LIST_PATH = "D:\data\pdb_4960list.txt"
-$env:PPI_STRUCTURES_ZIP = "D:\data\ppi_structures.zip"
-$env:SPLITS_FINAL_ZIP = "D:\data\splits_final.zip"
+$env:PPI_LIST_PATH = "C:\path\to\pdb_4960.txt"
+$env:PPI_STRUCTURES_ZIP = "C:\path\to\ppi_structures.zip"
+$env:SPLITS_FINAL_ZIP = "C:\path\to\splits_final.zip"
 ```
 
 Alternatively, pass `--ppi-list`, `--ppi-zip`, and `--abag-zip` to `dataset.py`.

@@ -3,57 +3,185 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#07111f">
-  <title>Antibody–Antigen Interaction Analyzer</title>
-  <link rel="stylesheet" href="/static/style.css">
-  <script src="/static/script.js" defer></script>
+  <meta name="theme-color" content="#090a16">
+  <title>Zipped_ABAG · Interaction Analysis</title>
+  <meta name="description" content="Guided and specialised analysis of antibody–antigen and general protein interactions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css?v=sabdab-cdr-2026-11-17">
+  <script src="https://3dmol.org/build/3Dmol-min.js" defer></script>
+  <script src="/static/script.js?v=sabdab-cdr-2026-11-17" defer></script>
 </head>
 <body>
-  <div class="app-layout">
-    <header class="app-navbar">
-      <div class="nav-container">
-        <a class="nav-brand" href="/" aria-label="Antibody Antigen Analyzer home">
-          <span class="brand-logo" aria-hidden="true">✣</span>
-          <span class="brand-text"><strong>ANTIBODY–ANTIGEN INTERACTION ANALYZER</strong><small>Structure classification · CNN inference</small></span>
-        </a>
-        <span class="status-pill"><i></i> PREDICTION READY</span>
-      </div>
-    </header>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#home" data-nav-view="home" aria-label="Zipped_ABAG home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 33V20M20 20 9 8M20 20 31 8M9 8l-4 9M9 8l9 2M31 8l-4 9M31 8l-9 2"/><circle cx="20" cy="34" r="2.5"/><circle cx="5" cy="18" r="2"/><circle cx="18" cy="10" r="2"/><circle cx="35" cy="18" r="2"/><circle cx="22" cy="10" r="2"/></svg></span>
+        <span class="brand-copy"><strong>Zipped_ABAG</strong><small>STRUCTURE ANALYSIS</small></span>
+      </a>
 
-    <main class="main-wrapper">
-      <section class="analysis-hero-card">
-        <div class="hero-copy">
-          <span class="hero-eyebrow">STRUCTURAL BIOLOGY INFERENCE</span>
-          <h1>Read the interaction<br><span>in a protein structure.</span></h1>
-          <p>Enter a PDB ID or upload a PDB/mmCIF file to classify its protein interaction.</p>
+      <div class="nav-caption">WORKSPACE</div>
+      <nav class="primary-nav">
+        <button class="nav-item active" type="button" data-nav-view="home"><span class="nav-icon">⌂</span><span>Home</span></button>
+        <button class="nav-item" type="button" data-nav-view="beginner" data-default-subview="beginner-overview"><span class="nav-icon">◉</span><span>Beginner Mode</span><span class="nav-chevron">›</span></button>
+        <div class="subnav" data-subnav-group="beginner" hidden>
+          <button type="button" data-nav-subview="beginner-overview">Overview</button>
+          <button type="button" data-nav-subview="beginner-learn">Learn</button>
+          <button type="button" data-nav-subview="beginner-analyse">Analyse</button>
+          <button type="button" data-nav-subview="beginner-examples">Examples</button>
+          <button type="button" data-nav-view="history">My Analyses</button>
         </div>
-        <form id="prediction-form" class="analysis-controller">
-          <div class="form-field">
-            <label for="pdb-id">PDB identifier</label>
-            <div class="search-input-wrapper"><span class="search-icon" aria-hidden="true">⌕</span><input id="pdb-id" name="pdb_id" type="text" maxlength="16" placeholder="e.g. 1EJO" autocomplete="off" autocapitalize="characters"><span class="input-tag">PDB ID</span></div>
+        <button class="nav-item" type="button" data-nav-view="specialised" data-default-subview="specialised-overview"><span class="nav-icon">⌬</span><span>Specialised Mode</span><span class="nav-chevron">›</span></button>
+        <div class="subnav" data-subnav-group="specialised" hidden>
+          <button type="button" data-nav-subview="specialised-overview">Overview</button>
+          <button type="button" data-nav-subview="specialised-viewer">Structure Viewer</button>
+          <button type="button" data-nav-subview="specialised-heatmap">Interaction Heatmap</button>
+          <button type="button" data-nav-subview="specialised-cdr">CDR Analysis</button>
+          <button type="button" data-nav-subview="specialised-chains">Chain Details</button>
+          <button type="button" data-nav-subview="specialised-prediction">Prediction</button>
+          <button type="button" data-nav-view="history">My Analyses</button>
+        </div>
+        <button class="nav-item" type="button" data-nav-view="history"><span class="nav-icon">◷</span><span>My Analyses</span></button>
+      </nav>
 
+      <div class="sidebar-foot">
+        <div class="sidebar-foot-line"></div>
+        <p>TEST 1 <span>·</span> INTERACTION CLASSIFICATION</p>
+        <button class="collapse-button" id="sidebar-toggle" type="button" aria-label="Collapse sidebar" aria-expanded="true"><span>‹</span><span class="collapse-label">Collapse menu</span></button>
+      </div>
+    </aside>
+
+    <div class="main-column">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobile-menu" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+        <div class="topbar-heading"><span class="topbar-kicker">ZIPPED_ABAG <span>/</span> <span id="current-section-label">HOME</span></span><span class="topbar-subtitle">Antibody–antigen interaction analysis</span></div>
+        <div class="topbar-badge"><i></i> TEST 1 · CNN</div>
+      </header>
+
+      <main id="main-content" tabindex="-1">
+        <div class="global-message" id="global-message" role="status" aria-live="polite" hidden></div>
+
+        <!-- HOME: small introduction, mode choice, and entry form. -->
+        <section class="view-panel home-view" data-view-panel="home">
+          <div class="home-hero">
+            <div class="home-copy">
+              <span class="eyebrow"><i></i> COMPUTATIONAL STRUCTURAL BIOLOGY</span>
+              <h1>Machine learning-based<br><span>structural analysis of antibody–antigen interactions.</span></h1>
+              <p>Explore protein structures and classify an interaction as antibody–antigen or general protein–protein using the trained Test 1 model.</p>
+              <div class="hero-actions"><button class="button button-primary" type="button" data-nav-view="beginner" data-default-subview="beginner-overview">Beginner Mode <span>→</span></button><button class="button button-quiet" type="button" data-nav-view="specialised" data-default-subview="specialised-overview">Specialised Mode</button></div>
+            </div>
+            <div class="hero-visual" aria-label="Illustration of an antibody meeting an antigen">
+              <img class="interaction-hero-image" src="/static/interaction-illustration.png" alt="Illustration of antibody and antigen proteins interacting at their interface">
+              <div class="visual-caption"><span class="caption-dot"></span> STRUCTURE → INTERFACE → CLASSIFICATION</div>
+            </div>
           </div>
-          <div class="or-divider"><span>OR UPLOAD A STRUCTURE</span></div>
-          <label class="upload-box" for="structure-file"><span class="upload-icon">↑</span><span><strong id="file-name">Choose a PDB or mmCIF file</strong><small>.pdb · .ent · .cif · .mmcif · up to 100 MB</small></span><input id="structure-file" name="structure" type="file" accept=".pdb,.ent,.cif,.mmcif"></label>
+        </section>
 
-          <div class="examples"><span>Examples</span><button type="button" data-pdb="1EJO">1EJO</button><button type="button" data-pdb="1KC5">1KC5</button><button type="button" data-pdb="1DQJ">1DQJ</button></div>
-          <button id="submit-button" class="analyze-button" type="submit"><span>Analyze structure</span><b>→</b></button>
-          <div id="result-status" class="status-message hidden" role="status" aria-live="polite"></div>
-        </form>
-      </section>
+        <!-- BEGINNER MODE -->
+        <section class="view-panel workspace-view" data-view-panel="beginner" hidden>
+          <section class="subview" data-subview-panel="beginner-overview">
+            <div class="page-intro"><span class="eyebrow">BEGINNER MODE / OVERVIEW</span><h1>Start with the essentials.</h1><p>A guided space for learning the parts of a protein complex and understanding what the Test 1 prediction means.</p></div>
+            <div class="beginner-overview-grid">
+              <article class="content-card learning-card"><span class="card-index">YOUR GUIDE</span><h2>Learn, then analyse</h2><p>Begin with the short lessons, then submit a PDB ID or structure file. The backend returns the detected partners, interaction matrix and CNN classification.</p><button class="button button-primary" type="button" data-nav-subview="beginner-learn">Open the learning guide <span>→</span></button></article>
+              <article class="content-card latest-card"><span class="card-index">LATEST ANALYSIS</span><div id="beginner-latest-empty" class="empty-inline"><h2>No analysis yet</h2><p>Your completed analyses appear here in this browser.</p></div><div id="beginner-latest-result" hidden><h2 id="beginner-latest-title"></h2><p id="beginner-latest-description"></p><button class="text-button" type="button" data-nav-subview="beginner-analyse">Open Analyse <span>→</span></button></div></article>
+            </div>
+            <div class="step-row" aria-label="Analysis steps"><div><b>01</b><span>Structure</span></div><i>→</i><div><b>02</b><span>Partners</span></div><i>→</i><div><b>03</b><span>Matrix</span></div><i>→</i><div><b>04</b><span>Prediction</span></div></div>
+          </section>
 
+          <section class="subview" data-subview-panel="beginner-learn" hidden>
+            <div class="page-intro"><span class="eyebrow">BEGINNER MODE / LEARN</span><h1>Build a mental model.</h1><p>Choose a topic to open its explanation. Lessons are written for someone seeing protein structure analysis for the first time.</p></div>
+            <div class="learn-layout"><nav class="topic-list" aria-label="Learning topics">
+              <button class="topic-button active" type="button" data-topic="antibody">01 <span>What is an antibody?</span></button>
+              <button class="topic-button" type="button" data-topic="antigen">02 <span>What is an antigen?</span></button>
+              <button class="topic-button" type="button" data-topic="interaction">03 <span>How do they interact?</span></button>
+              <button class="topic-button" type="button" data-topic="chains">04 <span>Heavy and light chains</span></button>
+              <button class="topic-button" type="button" data-topic="cdr">05 <span>CDR regions</span></button>
+              <button class="topic-button" type="button" data-topic="pdb">06 <span>Protein structures and PDB</span></button>
+              <button class="topic-button" type="button" data-topic="matrix">07 <span>The interaction matrix</span></button>
+              <button class="topic-button" type="button" data-topic="cnn">08 <span>CNN prediction</span></button>
+            </nav><article class="topic-content content-card" id="topic-content" aria-live="polite"></article></div>
+          </section>
 
-      <section id="result-section" class="results hidden" aria-live="polite">
-        <article id="prediction-result" class="result-card prediction-card hidden"></article>
-        <article id="matrix-panel" class="result-card matrix-card hidden">
-          <div class="card-heading"><div><span class="card-eyebrow">STRUCTURE FEATURES</span><h2>Interaction matrix</h2></div><span id="result-pdb-id" class="result-id"></span></div>
-          <p class="matrix-description">20×20 amino-acid interaction heatmap</p>
-          <div class="matrix-grid"><div class="canvas-wrap"><canvas id="heatmap" width="700" height="700" aria-label="20 by 20 amino-acid interaction matrix heatmap"></canvas></div><div class="matrix-aside"><div class="legend-item"><i class="legend-a"></i><span><b>Partner A</b><small>Lower triangle</small></span></div><div class="legend-item"><i class="legend-b"></i><span><b>Partner B</b><small>Upper triangle</small></span></div><div class="legend-item"><i class="legend-zero"></i><span><b>Diagonal</b><small>Zero by design</small></span></div></div></div>
-        </article>
-      </section>
-    </main>
-    <footer class="app-footer"><span>ANTIBODY–ANTIGEN INTERACTION ANALYZER</span></footer>
+          <section class="subview" data-subview-panel="beginner-analyse" hidden>
+            <div class="page-intro"><span class="eyebrow">BEGINNER MODE / ANALYSE</span><h1>Analyse a structure.</h1><p>Submit a PDB ID or upload the coordinate file. The backend runs structure validation, contact detection, matrix generation and prediction.</p></div>
+            <form class="analysis-form content-card" data-analysis-form data-after-analysis="beginner">
+              <div class="form-grid">
+                <label class="field"><span>PDB identifier</span><input name="pdb_id" type="text" maxlength="16" placeholder="e.g. 1EJO" autocomplete="off" autocapitalize="characters"><small>Requires access to RCSB to retrieve coordinates.</small></label>
+                <label class="field"><span>Or upload a structure</span><span class="file-picker"><span class="file-icon">↑</span><span class="file-picker-copy"><strong data-file-name>Choose PDB or mmCIF</strong><small>.pdb · .ent · .cif · .mmcif</small></span><input name="structure" type="file" accept=".pdb,.ent,.cif,.mmcif"></span></label>
+                <div class="form-submit"><button class="button button-primary submit-button" type="submit">Analyse structure <span>→</span></button></div>
+              </div>
+            </form>
+            <div class="analysis-progress content-card" id="analysis-progress" hidden aria-live="polite"><span class="spinner"></span><div><strong>Analysis is running</strong><p>The backend processes the structure and returns a result when the full request completes. It does not expose live step-by-step progress.</p></div></div>
+            <article class="result-explainer content-card" id="beginner-result-explainer" hidden><span class="card-index">YOUR RESULT</span><h2 id="beginner-result-title"></h2><p id="beginner-result-text"></p><div class="result-explainer-meta" id="beginner-result-meta"></div><button class="button button-secondary" type="button" data-nav-view="specialised" data-default-subview="specialised-overview">Inspect detailed result <span>→</span></button></article>
+            <div class="workflow-list content-card"><span class="card-index">WHAT THE BACKEND DOES</span><div class="workflow-step"><b>01</b><div><strong>Structure loading</strong><p>Reads the uploaded file or retrieves the PDB coordinates.</p></div></div><div class="workflow-step"><b>02</b><div><strong>Partner and contact detection</strong><p>Validates protein chains and finds heavy-atom contacts within the configured cutoff.</p></div></div><div class="workflow-step"><b>03</b><div><strong>Matrix generation</strong><p>Builds the backend-defined normalized 20×20 interface feature matrix.</p></div></div><div class="workflow-step"><b>04</b><div><strong>CNN prediction</strong><p>Returns the Test 1 interaction class and its available probability fields.</p></div></div></div>
+          </section>
+
+          <section class="subview" data-subview-panel="beginner-examples" hidden>
+            <div class="page-intro"><span class="eyebrow">BEGINNER MODE / EXAMPLES</span><h1>Example analyses</h1><p>Saved example structures and verified example outputs are not bundled in this project, so this page does not present precomputed results as real analyses.</p></div>
+            <article class="empty-state content-card"><span class="empty-symbol">＋</span><h2>No curated examples are configured</h2><p>Run a live analysis with a PDB ID or a local structure file. The returned result will be saved to My Analyses in this browser.</p><button class="button button-primary" type="button" data-nav-subview="beginner-analyse">Go to Analyse <span>→</span></button></article>
+          </section>
+        </section>
+
+        <!-- SPECIALISED MODE -->
+        <section class="view-panel workspace-view" data-view-panel="specialised" hidden>
+          <section class="subview" data-subview-panel="specialised-overview">
+            <div class="page-intro"><span class="eyebrow">SPECIALISED MODE / OVERVIEW</span><h1>Inspect the structure.</h1><p>Submit a structure to view the model classification and the feature data returned by the Test 1 API.</p></div>
+            <form class="analysis-form content-card" data-analysis-form data-after-analysis="specialised">
+              <div class="form-grid">
+                <label class="field"><span>PDB identifier</span><input name="pdb_id" type="text" maxlength="16" placeholder="e.g. 1EJO" autocomplete="off" autocapitalize="characters"><small>The backend fetches coordinates from RCSB.</small></label>
+                <label class="field"><span>Or upload a structure</span><span class="file-picker"><span class="file-icon">↑</span><span class="file-picker-copy"><strong data-file-name>Choose PDB or mmCIF</strong><small>.pdb · .ent · .cif · .mmcif</small></span><input name="structure" type="file" accept=".pdb,.ent,.cif,.mmcif"></span></label>
+                <div class="form-submit"><button class="button button-primary submit-button" type="submit">Run Test 1 <span>→</span></button></div>
+              </div>
+            </form>
+            <div class="analysis-progress content-card" data-progress-panel hidden aria-live="polite"><span class="spinner"></span><div><strong>Processing structure</strong><p>The API returns a result after its validation and CNN request completes.</p></div></div>
+            <div class="specialised-summary content-card" id="specialised-summary" hidden>
+              <div class="summary-heading"><div><span class="card-index">CURRENT STRUCTURE</span><h2 id="summary-pdb-id"></h2></div><span class="class-chip" id="summary-class-chip"></span></div>
+              <div class="summary-grid"><div><span>Partner A chains</span><strong id="summary-partner-a">—</strong></div><div><span>Partner B chains</span><strong id="summary-partner-b">—</strong></div><div><span>Partner A interface residues</span><strong id="summary-interface-a">—</strong></div><div><span>Partner B interface residues</span><strong id="summary-interface-b">—</strong></div></div>
+              <div class="summary-links"><button class="text-button" type="button" data-nav-subview="specialised-viewer">View structure →</button><button class="text-button" type="button" data-nav-subview="specialised-heatmap">Open heatmap →</button><button class="text-button" type="button" data-nav-subview="specialised-prediction">Prediction details →</button></div>
+            </div>
+          </section>
+
+          <section class="subview" data-subview-panel="specialised-viewer" hidden>
+            <div class="page-intro"><span class="eyebrow">SPECIALISED MODE / STRUCTURE VIEWER</span><h1>Explore in 3D.</h1><p>Rotate and zoom the analyzed coordinates. Partner colors follow the chain groups returned by the backend; chain identity is not inferred beyond those groups.</p></div>
+            <article class="viewer-card content-card">
+              <div class="viewer-toolbar"><div class="viewer-legend"><span><i class="legend-dot partner-a-dot"></i>Partner A <b id="viewer-partner-a">—</b></span><span><i class="legend-dot partner-b-dot"></i>Partner B <b id="viewer-partner-b">—</b></span></div><div class="viewer-actions"><label class="viewer-select-label">Highlight<select id="viewer-highlight"><option value="both">Both partners</option><option value="a">Partner A</option><option value="b">Partner B</option></select></label><button class="icon-button" id="viewer-reset" type="button" title="Reset view">Reset</button><button class="icon-button" id="viewer-fullscreen" type="button">Fullscreen</button></div></div>
+              <div class="viewer-stage" id="viewer-stage"><div id="structure-viewer" aria-label="Interactive 3D protein structure viewer"></div><div class="viewer-empty" id="viewer-message"><span class="viewer-mark">◌</span><strong>Structure viewer is waiting</strong><p>Run an analysis first. Uploaded files can be viewed during this browser session; PDB IDs can be reloaded from RCSB.</p></div></div>
+              <p class="viewer-note" id="viewer-note">CDR highlighting is unavailable because the current API does not return CDR residue ranges.</p>
+            </article>
+          </section>
+
+          <section class="subview" data-subview-panel="specialised-heatmap" hidden>
+            <div class="page-intro"><span class="eyebrow">SPECIALISED MODE / INTERACTION HEATMAP</span><h1>Read the feature matrix.</h1><p>Click any cell to inspect its amino-acid labels, position, and exact returned value.</p></div>
+            <article class="heatmap-card content-card"><div class="heatmap-header"><div><span class="card-index">CNN INPUT FEATURE</span><h2 id="heatmap-title">No matrix loaded</h2></div><span class="matrix-size">20 × 20</span></div><div class="heatmap-layout"><div class="heatmap-canvas-wrap"><canvas id="interaction-heatmap" width="720" height="720" aria-label="Interactive 20 by 20 amino acid interaction matrix"></canvas></div><aside class="cell-inspector" id="cell-inspector"><span class="card-index">CELL INSPECTOR</span><h3>Select a matrix cell</h3><p>Its row and column amino-acid labels and actual matrix value will appear here.</p><div id="cell-detail" class="cell-detail" hidden></div></aside></div><div class="heatmap-legend"><span><i class="legend-dot partner-a-dot"></i>Partner A · lower triangle</span><span><i class="legend-dot partner-b-dot"></i>Partner B · upper triangle</span><span><i class="legend-dot diagonal-dot"></i>Diagonal · zero</span></div><p class="matrix-method-note">Values are normalized counts of side-chain heavy-atom contacts between distinct interface residues within each partner. Cross-partner contacts select interface residues; they are not the matrix values. Each triangle is normalized separately; same-amino-acid contacts are omitted to preserve the zero diagonal.</p></article>
+          </section>
+
+          <section class="subview" data-subview-panel="specialised-cdr" hidden>
+            <div class="page-intro"><span class="eyebrow">SPECIALISED MODE / CDR ANALYSIS</span><h1>CDR Analysis (IMGT Definition)</h1><p>View IMGT-numbered heavy- and light-chain CDR loops, their residue counts, sequences, and interface overlap.</p></div>
+            <article class="cdr-analysis-card content-card"><span class="status-tag" id="cdr-status-tag">WAITING FOR ANALYSIS</span><h2>IMGT CDR residues</h2><p class="cdr-intro">CDR positions are assigned by IMGT numbering and mapped back to the uploaded structure. This annotation is separate from the CNN classification.</p><div id="cdr-analysis-status" class="cdr-analysis-status" role="status">Run a structure prediction to analyze its antibody chains.</div><a id="sabdab-structure-download" class="text-button" hidden download>Download the SAbDab IMGT-numbered mmCIF</a><div id="cdr-analysis-results" hidden><div id="cdr-loop-cards" class="cdr-loop-groups"></div><h3 class="cdr-detail-heading">Mapped residue details</h3><div class="cdr-table-scroll"><table><thead><tr><th>Chain</th><th>Partner</th><th>CDR region</th><th>Sequence</th><th>Residues</th><th>At interface</th><th>Structure residue IDs</th></tr></thead><tbody id="cdr-table-body"></tbody></table></div></div><p class="cdr-method-note">IMGT CDR boundaries: positions 27–38 (CDR1), 56–65 (CDR2), and 105–117 (CDR3), including insertion positions. Residue numbers shown are the original PDB/mmCIF identifiers.</p></article>
+          </section>
+
+          <section class="subview" data-subview-panel="specialised-chains" hidden>
+            <div class="page-intro"><span class="eyebrow">SPECIALISED MODE / CHAIN DETAILS</span><h1>Inspect partner chains.</h1><p>The API returns chain identifiers and selected interface statistics for the predicted pair.</p></div>
+            <article class="table-card content-card"><div class="table-heading"><div><span class="card-index">PREDICTED PARTNER PAIR</span><h2 id="chain-table-title">No structure loaded</h2></div></div><div class="table-scroll"><table><thead><tr><th>Partner</th><th>Chain IDs</th><th>Interface residues</th><th>Side-chain contacts</th><th>Residue ranges</th></tr></thead><tbody id="chain-table-body"><tr><td colspan="5" class="table-empty">Run an analysis to populate chain metadata.</td></tr></tbody></table></div><p class="data-availability-note">Full chain sequences, total chain lengths, and biological heavy/light/antigen type labels are not returned by this API.</p></article>
+          </section>
+
+          <section class="subview" data-subview-panel="specialised-prediction" hidden>
+            <div class="page-intro"><span class="eyebrow">SPECIALISED MODE / PREDICTION</span><h1>Test 1 classification.</h1><p>This model distinguishes antibody–antigen interactions from general protein–protein interactions. It does not classify pairs as physically binding or non-binding.</p></div>
+            <article class="prediction-detail-card content-card"><div class="prediction-main"><div><span class="card-index">CNN OUTPUT</span><h2 id="prediction-class">No prediction loaded</h2><p id="prediction-label"></p></div><span class="prediction-mark" id="prediction-mark">—</span></div><div class="probability-grid"><div><span>Antibody–antigen probability</span><strong id="prediction-probability">—</strong></div><div><span>Decision threshold</span><strong>0.50</strong></div></div><p class="prediction-caveat" id="prediction-interpretation">The model score describes this classifier's output; it is not an experimental confirmation or physical binding probability.</p><div class="prediction-actions"><button class="button button-secondary" id="download-result" type="button" disabled>Download result JSON</button><button class="button button-quiet" id="download-matrix" type="button" disabled>Download matrix CSV</button></div></article>
+          </section>
+        </section>
+
+        <!-- PERSISTENT HISTORY -->
+        <section class="view-panel history-view" data-view-panel="history" hidden>
+          <div class="page-intro"><span class="eyebrow">LOCAL HISTORY</span><h1>My Analyses</h1><p>Successful results are saved in this browser only. Uploaded coordinate files are not stored in history.</p></div>
+          <div id="history-list" class="history-list"></div>
+          <div class="empty-state content-card" id="history-empty"><span class="empty-symbol">◷</span><h2>No saved analyses</h2><p>After a successful prediction, the PDB/file name and actual response data will appear here.</p><button class="button button-primary" type="button" data-nav-view="home">Start an analysis <span>→</span></button></div>
+        </section>
+      </main>
+
+      <footer class="app-footer"><span>ZIPPED_ABAG <i>·</i> TEST 1</span><span>Structure data and predictions are processed by the existing backend.</span></footer>
+    </div>
   </div>
 </body>
 </html>
-

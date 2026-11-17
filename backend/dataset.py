@@ -25,9 +25,10 @@ except ImportError:  # Also support running this file directly during developmen
     from structure_processing import AA_ORDER, build_interaction_matrix, parse_structure
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_PPI_LIST = Path(r"C:\Users\yadavalli charishma\ABAG\pdb_4960list.txt")
-DEFAULT_PPI_ZIP = Path(r"C:\Users\yadavalli charishma\ABAG\ppi_structures.zip")
-DEFAULT_ABAG_ZIP = Path(r"C:\Users\yadavalli charishma\Downloads\splits\splits_final.zip")
+RAW_DATA_DIR = ROOT / "data" / "raw"
+DEFAULT_PPI_LIST = RAW_DATA_DIR / "pdb_4960.txt"
+DEFAULT_PPI_ZIP = RAW_DATA_DIR / "ppi_structures.zip"
+DEFAULT_ABAG_ZIP = RAW_DATA_DIR / "splits_final.zip"
 OUTPUT_DIR = ROOT / "data" / "processed"
 CLASS_NAMES = {0: "General Protein-Protein Interaction", 1: "Antibody-Antigen Interaction"}
 _WORKER_PPI_ARCHIVE = None

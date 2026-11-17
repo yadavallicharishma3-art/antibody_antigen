@@ -6,7 +6,7 @@ import io
 import csv
 import os
 import re
-import json
+import json  
 from functools import lru_cache
 from pathlib import Path
 from urllib.error import HTTPError, URLError
@@ -21,6 +21,7 @@ from starlette.concurrency import run_in_threadpool
 from ml_pipeline import MODEL_PATH, predict_matrix
 from structure_processing import (
     AA_ORDER,
+    analyze_cdr_regions,
     build_interaction_matrix,
     find_interacting_chain_pairs,
     parse_structure,
@@ -102,6 +103,22 @@ def _known_partner_assignments() -> dict[str, list[dict]]:
 def index():
     """Serve the project frontend."""
     return FileResponse(FRONTEND / "index.html")
+
+
+@app.get("/api/sabdab-structure/{pdb_id}")
+def download_sabdab_structure(pdb_id: str):
+    """Serve a cached SAbDab IMGT-numbered mmCIF downloaded during CDR analysis."""
+    core = _pdb_core(pdb_id)
+    if not re.fullmatch(r"[a-z0-9]{4}", core):
+        return JSONResponse({"error": "Invalid PDB ID."}, status_code=400)
+    structure_path = PROCESSED / f"{core}_sabdab_imgt.cif"
+    if not structure_path.is_file():
+        return JSONResponse({"error": "No SAbDab IMGT-numbered structure has been downloaded for this PDB ID."}, status_code=404)
+    return FileResponse(
+        structure_path,
+        media_type="chemical/x-mmcif",
+        filename=f"{core}_sabdab_imgt.cif",
+    )
 
 
 @app.post("/api/predict")
@@ -211,6 +228,8 @@ async def predict(
                 "metadata": metadata_ab,
                 "chain_a": chains_a,
                 "chain_b": chains_b,
+                "ranges_a": ranges_a,
+                "ranges_b": ranges_b,
                 "cross_partner_residue_contacts": metadata_ab["cross_partner_residue_contacts"],
             })
         return scored
@@ -241,6 +260,16 @@ async def predict(
         "partner_a_chains": best["chain_a"],
         "partner_b_chains": best["chain_b"],
     }
+    cdr_analysis = await run_in_threadpool(
+        analyze_cdr_regions,
+        model,
+        best["chain_a"],
+        best["chain_b"],
+        cutoff,
+        best.get("ranges_a"),
+        best.get("ranges_b"),
+        pdb_id,
+    )
 
     return {
         "pdb_id": pdb_id,
@@ -250,6 +279,7 @@ async def predict(
         "amino_acid_order": AA_ORDER,
         "feature_metadata": best["metadata"],
         "prediction": prediction,
+        "cdr_analysis": cdr_analysis,
         "candidate_interactions": len(candidates),
     }
 
