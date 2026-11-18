@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css?v=formatted-2026-11-17">
   <script src="https://3dmol.org/build/3Dmol-min.js" defer></script>
-  <script src="/static/script.js?v=learning-text-file-2026-11-17" defer></script>
+  <script src="/static/script.js?v=beginner-examples-removed-2026-11-18" defer></script>
 </head>
 <body>
   <div class="app-shell">
@@ -29,7 +29,6 @@
           <button type="button" data-nav-subview="beginner-overview">Overview</button>
           <button type="button" data-nav-subview="beginner-learn">Learn</button>
           <button type="button" data-nav-subview="beginner-analyse">Analyse</button>
-          <button type="button" data-nav-subview="beginner-examples">Examples</button>
           <button type="button" data-nav-view="history">My Analyses</button>
         </div>
         <button class="nav-item" type="button" data-nav-view="specialised" data-default-subview="specialised-overview"><span class="nav-icon">⌬</span><span>Specialised Mode</span><span class="nav-chevron">›</span></button>
@@ -114,10 +113,7 @@
             <div class="workflow-list content-card"><span class="card-index">ANALYSIS WORKFLOW</span><div class="workflow-step"><b>01</b><div><strong>Structure loading</strong><p>Reads the uploaded file or retrieves the PDB coordinates.</p></div></div><div class="workflow-step"><b>02</b><div><strong>Partner and contact detection</strong><p>Validates protein chains and finds heavy-atom contacts within the configured cutoff.</p></div></div><div class="workflow-step"><b>03</b><div><strong>Matrix generation</strong><p>Builds the backend-defined normalized 20×20 interface feature matrix.</p></div></div><div class="workflow-step"><b>04</b><div><strong>Interaction prediction</strong><p>Reports whether the structure is classified as antibody–antigen or general protein–protein.</p></div></div></div>
           </section>
 
-          <section class="subview" data-subview-panel="beginner-examples" hidden>
-            <div class="page-intro"><span class="eyebrow">BEGINNER MODE / EXAMPLES</span><h1>Example analyses</h1><p>Saved example structures and verified example outputs are not bundled in this project, so this page does not present precomputed results as real analyses.</p></div>
-            <article class="empty-state content-card"><span class="empty-symbol">＋</span><h2>No curated examples are configured</h2><p>Run a live analysis with a PDB ID or a local structure file. The returned result will be saved to My Analyses in this browser.</p><button class="button button-primary" type="button" data-nav-subview="beginner-analyse">Go to Analyse <span>→</span></button></article>
-          </section>
+
         </section>
 
         <!-- SPECIALISED MODE -->

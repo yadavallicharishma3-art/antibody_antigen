@@ -75,6 +75,12 @@ def parse_structure(source: str | Path | BinaryIO, filename: str | None = None):
         raise ValueError("Structure contains no coordinate model")
     return models[0]
 
+# from Bio.PDB import PDBIO
+# model = parse_structure(r"C:\Users\yadavalli charishma\Downloads\splits\splits_final\pdb_00002r0z_H_L.cif")
+
+# io = PDBIO()
+# io.set_structure(model)
+# io.save("parsed_structure.pdb")
 
 def _chain_residues(model, chain_ids: Sequence[str], residue_ranges: Mapping[str, tuple] | None = None) -> tuple[list[Residue], list]:
     """Collect standard amino-acid residues and their heavy atoms for chosen chains."""
