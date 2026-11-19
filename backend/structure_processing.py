@@ -606,6 +606,26 @@ def build_interaction_matrix(
     matrix[np.tril_indices(20, -1)] = (counts_a.T / total_a)[np.tril_indices(20, -1)]
     matrix[np.triu_indices(20, 1)] = (counts_b / total_b)[np.triu_indices(20, 1)]
     validate_matrix(matrix)
+
+    def interface_residue_details(residues: set) -> list[dict]:
+        details = []
+        for residue in sorted(
+            residues,
+            key=lambda item: (
+                str(item.get_parent().id),
+                int(item.id[1]),
+                str(item.id[2]).strip(),
+            ),
+        ):
+            details.append({
+                "chain_id": str(residue.get_parent().id),
+                "residue_name": str(residue.resname).strip().upper(),
+                "amino_acid": _residue_letter(residue),
+                "residue_number": int(residue.id[1]),
+                "insertion_code": str(residue.id[2]).strip(),
+            })
+        return details
+
     metadata = {
         "sample_id": sample_id,
         "cutoff_angstrom": cutoff_angstrom,
@@ -616,6 +636,8 @@ def build_interaction_matrix(
         "partner_b_residue_ranges": {k: list(v) for k, v in actual_b_ranges.items()},
         "partner_a_interface_residues": len(interface_a),
         "partner_b_interface_residues": len(interface_b),
+        "partner_a_interface_residue_details": interface_residue_details(interface_a),
+        "partner_b_interface_residue_details": interface_residue_details(interface_b),
         "cross_partner_residue_contacts": cross_contacts,
         "partner_a_observed_sidechain_contacts": observed_a,
         "partner_b_observed_sidechain_contacts": observed_b,

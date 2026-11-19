@@ -20,7 +20,7 @@
     "1": "Antibody-Antigen Interaction"
   },
   "architecture": "20x20x1-conv32-pool-conv32-pool-conv32-pool-flatten-dense512-dense64-sigmoid-v1",
-  "model_path": "C:\\Users\\yadavalli charishma\\Documents\\Codex\\2026-11-01\\1-read-the-entire-specification-x20\\outputs\\Antibody_Antigen\\models\\cnn_20x20_three_conv.keras",
+  "model_path": "C:\\Users\\yadavalli charishma\\new_abag\\models\\cnn_20x20_three_conv.keras",
   "selected_by": "minimum validation loss with early stopping",
   "split_counts": {
     "train": {

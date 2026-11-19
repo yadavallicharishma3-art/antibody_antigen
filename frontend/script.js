@@ -26,6 +26,10 @@
   let currentStructure = null;
   let viewer = null;
   let viewerModel = null;
+  let viewerLoadGeneration = 0;
+  let viewerInitialView = null;
+  let viewerIdleTimer = null;
+  let viewerEventsBound = false;
 
   const byId = (id) => document.getElementById(id);
   const text = (id, value) => { const el = byId(id); if (el) el.textContent = value ?? "—"; };
@@ -327,13 +331,12 @@
     text("prediction-interpretation", prediction.interpretation || "This classification is not experimental confirmation of physical binding.");
     text("heatmap-title", `${result.pdb_id || "Uploaded structure"} · normalized interface feature`);
     text("chain-table-title", result.pdb_id || currentStructure?.name || "Uploaded structure");
-    const ranges = meta.partner_a_residue_ranges || meta.partner_a_interface_residue_ranges;
-    const rangesB = meta.partner_b_residue_ranges || meta.partner_b_interface_residue_ranges;
     const table = byId("chain-table-body");
     if (table) table.innerHTML = [
-      ["Partner A", chainsText(prediction.partner_a_chains), meta.partner_a_interface_residues, meta.partner_a_observed_sidechain_contacts, ranges],
-      ["Partner B", chainsText(prediction.partner_b_chains), meta.partner_b_interface_residues, meta.partner_b_observed_sidechain_contacts, rangesB]
-    ].map(row => `<tr><td>${esc(row[0])}</td><td>${esc(row[1])}</td><td>${esc(numberText(row[2]))}</td><td>${esc(numberText(row[3]))}</td><td>${esc(formatRanges(row[4]))}</td></tr>`).join("");
+      ["Partner A", chainsText(prediction.partner_a_chains), meta.partner_a_interface_residues, meta.partner_a_observed_sidechain_contacts],
+      ["Partner B", chainsText(prediction.partner_b_chains), meta.partner_b_interface_residues, meta.partner_b_observed_sidechain_contacts]
+    ].map(row => `<tr><td>${esc(row[0])}</td><td>${esc(row[1])}</td><td>${esc(numberText(row[2]))}</td><td>${esc(numberText(row[3]))}</td></tr>`).join("");
+    renderInterfaceResidues(meta, prediction, result.cdr_analysis);
     drawHeatmap();
     renderCdrAnalysis(result.cdr_analysis);
     updateViewerLabels(prediction);
@@ -342,10 +345,83 @@
     setupViewer();
   }
 
-  function formatRanges(value) {
-    if (value == null) return "Not returned";
-    if (typeof value === "string") return value;
-    try { return JSON.stringify(value); } catch { return "Not returned"; }
+  function structureResidueKey(chainId, number, insertionCode = "") {
+    return `${String(chainId || "").trim().toUpperCase()}|${String(number ?? "").trim()}|${String(insertionCode || "").trim().toUpperCase()}`;
+  }
+
+  function renderInterfaceResidues(meta, prediction, cdrAnalysis) {
+    const heavyCell = byId("heavy-interface-residues");
+    const lightCell = byId("light-interface-residues");
+    const antigenCell = byId("antigen-interface-residues");
+    if (!heavyCell || !lightCell || !antigenCell) return;
+
+    const domains = Array.isArray(cdrAnalysis?.antibody_domains) ? cdrAnalysis.antibody_domains : [];
+    const heavyChains = new Set(domains.filter(domain => domain.chain_type === "heavy").map(domain => String(domain.chain_id).trim().toUpperCase()));
+    const lightChains = new Set(domains.filter(domain => domain.chain_type === "light").map(domain => String(domain.chain_id).trim().toUpperCase()));
+    const antibodyChains = new Set([...heavyChains, ...lightChains]);
+    const partnerChains = new Set([
+      ...(Array.isArray(prediction.partner_a_chains) ? prediction.partner_a_chains : []),
+      ...(Array.isArray(prediction.partner_b_chains) ? prediction.partner_b_chains : [])
+    ].map(chain => String(chain).trim().toUpperCase()));
+    const antigenChains = new Set([...partnerChains].filter(chain => !antibodyChains.has(chain)));
+
+    const cdrByResidue = new Map();
+    domains.forEach(domain => (domain.cdr_regions || []).forEach(region => {
+      (region.residues || []).forEach(residue => {
+        cdrByResidue.set(
+          structureResidueKey(domain.chain_id, residue.pdb_residue_number, residue.pdb_insertion_code),
+          region.name
+        );
+      });
+    }));
+
+    const groups = { heavy: new Map(), light: new Map(), antigen: new Map() };
+    const interfaceDetails = [
+      ...(Array.isArray(meta.partner_a_interface_residue_details) ? meta.partner_a_interface_residue_details : []),
+      ...(Array.isArray(meta.partner_b_interface_residue_details) ? meta.partner_b_interface_residue_details : [])
+    ];
+    const seen = new Set();
+    interfaceDetails.forEach(residue => {
+      const chainId = String(residue.chain_id || "").trim();
+      const normalizedChain = chainId.toUpperCase();
+      const key = structureResidueKey(chainId, residue.residue_number, residue.insertion_code);
+      if (!chainId || seen.has(key)) return;
+      seen.add(key);
+
+      const role = heavyChains.has(normalizedChain) ? "heavy"
+        : lightChains.has(normalizedChain) ? "light"
+          : antigenChains.has(normalizedChain) ? "antigen" : null;
+      if (!role) return;
+      if (!groups[role].has(chainId)) groups[role].set(chainId, []);
+      groups[role].get(chainId).push({ ...residue, cdrRegion: cdrByResidue.get(key) || "" });
+    });
+
+    const renderGroup = (cell, role, label) => {
+      const chainGroups = groups[role];
+      if (!domains.length) {
+        cell.textContent = "Chain roles unavailable because no CDR annotations were returned.";
+        return;
+      }
+      if (!chainGroups.size) {
+        cell.textContent = `No ${label.toLowerCase()} interface residues identified.`;
+        return;
+      }
+      cell.innerHTML = [...chainGroups.entries()].map(([chainId, residues]) => {
+        residues.sort((a, b) => Number(a.residue_number) - Number(b.residue_number)
+          || String(a.insertion_code || "").localeCompare(String(b.insertion_code || "")));
+        const residueLabels = residues.map(residue => {
+          const aminoAcid = aminoAcidLabel(residue.residue_name || residue.amino_acid).short;
+          const structureId = `${residue.residue_number}${residue.insertion_code || ""}`;
+          const cdr = residue.cdrRegion ? ` <small>${esc(residue.cdrRegion)}</small>` : "";
+          return `<span class="interface-residue-item">${esc(aminoAcid)} ${esc(structureId)}${cdr}</span>`;
+        }).join("");
+        return `<div class="interface-residue-group"><strong>Chain ${esc(chainId)}</strong><div class="interface-residue-items">${residueLabels}</div></div>`;
+      }).join("");
+    };
+
+    renderGroup(heavyCell, "heavy", "Heavy-chain");
+    renderGroup(lightCell, "light", "Light-chain");
+    renderGroup(antigenCell, "antigen", "Antigen-chain");
   }
 
   function renderCdrAnalysis(data) {
@@ -432,8 +508,38 @@
   });
 
   function updateViewerLabels(prediction = {}) {
-    text("viewer-partner-a", chainsText(prediction.partner_a_chains));
-    text("viewer-partner-b", chainsText(prediction.partner_b_chains));
+    const roles = getViewerChainRoles(currentResult);
+    text("viewer-heavy-chains", chainsText(roles.heavy));
+    text("viewer-light-chains", chainsText(roles.light));
+    text("viewer-antigen-chains", chainsText(roles.antigen));
+  }
+
+  function getViewerChainRoles(result) {
+    const prediction = result?.prediction || {};
+    const partnerA = [...new Set((prediction.partner_a_chains || []).map(String))];
+    const partnerB = [...new Set((prediction.partner_b_chains || []).map(String))];
+    const participating = [...new Set([...partnerA, ...partnerB])];
+    const domains = Array.isArray(result?.cdr_analysis?.antibody_domains) ? result.cdr_analysis.antibody_domains : [];
+    const chainIds = type => [...new Set(domains
+      .filter(domain => domain.chain_type === type && domain.chain_id != null)
+      .map(domain => String(domain.chain_id))
+      .filter(chain => participating.includes(chain)))];
+    const heavy = chainIds("heavy");
+    const light = chainIds("light");
+    const antibody = new Set([...heavy, ...light]);
+    const antibodyPartners = new Set(domains.map(domain => String(domain.partner || "").toLowerCase()).filter(value => value === "partner a" || value === "partner b"));
+    let antigen = [];
+    if (antibodyPartners.has("partner a") && !antibodyPartners.has("partner b")) antigen = partnerB;
+    else if (antibodyPartners.has("partner b") && !antibodyPartners.has("partner a")) antigen = partnerA;
+    else if (domains.length) antigen = participating.filter(chain => !antibody.has(chain));
+    return {
+      heavy,
+      light,
+      antigen,
+      partnerA,
+      partnerB,
+      domains
+    };
   }
 
   function setupViewer() {
@@ -445,19 +551,28 @@
       return;
     }
     try {
-      viewer = $3Dmol.createViewer(mount, { backgroundColor: "#080809", antialias: true });
+      if (!viewer) viewer = $3Dmol.createViewer(mount, { backgroundColor: "#080809", antialias: true });
+      bindViewerControls();
+      const loadGeneration = ++viewerLoadGeneration;
+      clearTimeout(viewerIdleTimer);
+      viewerIdleTimer = null;
+      viewer.spin(false);
       viewer.clear();
       viewerModel = null;
+      viewerInitialView = null;
       show(byId("viewer-message"));
+      resetViewerControls();
       const structure = currentStructure;
       if (!structure) return;
       if (structure.kind === "upload") {
-        structure.file.text().then(contents => addStructure(contents, structure.file.name.toLowerCase().endsWith(".cif") ? "cif" : "pdb"));
+        structure.file.text().then(contents => addStructure(contents, structure.file.name.toLowerCase().endsWith(".cif") ? "cif" : "pdb", loadGeneration));
       } else if (structure.pdbId) {
         fetch(`https://files.rcsb.org/download/${encodeURIComponent(structure.pdbId)}.cif`)
           .then(response => { if (!response.ok) throw new Error(`RCSB returned ${response.status}`); return response.text(); })
-          .then(contents => addStructure(contents, "cif"))
-          .catch(error => { show(byId("viewer-message")); text("viewer-note", `Could not load the coordinates from RCSB: ${error.message}. The prediction result remains available.`); });
+          .then(contents => addStructure(contents, "cif", loadGeneration))
+          .catch(error => { if (loadGeneration !== viewerLoadGeneration) return; show(byId("viewer-message")); text("viewer-note", `Could not load the coordinates from RCSB: ${error.message}. The prediction result remains available.`); });
+      } else {
+        text("viewer-note", "This saved upload has no coordinate file in browser history. Upload it again to view its structure.");
       }
     } catch (error) {
       show(byId("viewer-message"));
@@ -465,29 +580,147 @@
     }
   }
 
-  function addStructure(contents, format) {
-    if (!viewer) return;
+  function addStructure(contents, format, loadGeneration) {
+    if (!viewer || loadGeneration !== viewerLoadGeneration) return;
     viewer.clear();
     viewerModel = viewer.addModel(contents, format);
-    viewer.setStyle({}, { cartoon: { color: "#63738a", opacity: 0.84 } });
     applyViewerHighlight();
-    viewer.zoomTo(); viewer.resize(); viewer.render();
+    viewer.zoomTo();
+    viewer.resize();
+    viewer.render();
+    viewerInitialView = viewer.getView();
     show(byId("viewer-message"), false);
+    updateCdrViewerAvailability();
+    scheduleViewerAutoRotation();
   }
 
   function applyViewerHighlight() {
     if (!viewer || !viewerModel || !currentResult) return;
-    const p = currentResult.prediction || {};
-    const a = p.partner_a_chains || [];
-    const b = p.partner_b_chains || [];
+    const roles = getViewerChainRoles(currentResult);
     const selected = byId("viewer-highlight")?.value || "both";
-    viewer.setStyle({}, { cartoon: { color: "#63738a", opacity: 0.58 } });
-    if (selected !== "b") a.forEach(chain => viewer.setStyle({ chain }, { cartoon: { color: "#a78bfa", opacity: 1 } }));
-    if (selected !== "a") b.forEach(chain => viewer.setStyle({ chain }, { cartoon: { color: "#55d4e4", opacity: 1 } }));
+    const visible = {
+      heavy: byId("viewer-show-heavy")?.checked !== false,
+      light: byId("viewer-show-light")?.checked !== false,
+      antigen: byId("viewer-show-antigen")?.checked !== false
+    };
+    const colorByRole = { heavy: "#3987ff", light: "#36c275", antigen: "#ec64a9" };
+    const roleByChain = new Map();
+    roles.heavy.forEach(chain => roleByChain.set(chain, "heavy"));
+    roles.light.forEach(chain => roleByChain.set(chain, "light"));
+    roles.antigen.forEach(chain => roleByChain.set(chain, "antigen"));
+
+    // Reset every atom to a neutral cartoon before applying the current roles,
+    // visibility, and CDR styles so a newly loaded structure cannot inherit old styling.
+    viewer.setStyle({}, { cartoon: { color: "#718096", opacity: 0.9 } });
+    for (const chain of [...new Set([...roles.partnerA, ...roles.partnerB])]) {
+      const role = roleByChain.get(chain);
+      if (!role) continue;
+      const isVisible = visible[role];
+      const partner = roles.partnerA.includes(chain) ? "a" : "b";
+      const opacity = selected !== "both" && selected !== partner ? 0.22 : 1;
+      viewer.setStyle({ chain }, isVisible
+        ? { cartoon: { color: colorByRole[role], opacity } }
+        : {});
+    }
+
+    const cdrEnabled = byId("viewer-show-cdr")?.checked !== false;
+    if (cdrEnabled) {
+      const cdrColors = { 1: "#ff9f43", 2: "#ffd43b", 3: "#f04452" };
+      for (const domain of roles.domains) {
+        const chain = String(domain.chain_id ?? "");
+        const role = roleByChain.get(chain);
+        if (!role || !visible[role]) continue;
+        for (const region of domain.cdr_regions || []) {
+          const match = String(region.name || "").match(/([123])$/);
+          const color = match ? cdrColors[match[1]] : null;
+          if (!color) continue;
+          for (const residue of region.residues || []) {
+            const residueNumber = Number(residue.pdb_residue_number);
+            if (!Number.isFinite(residueNumber)) continue;
+            const selector = { chain, resi: residueNumber };
+            const insertionCode = String(residue.pdb_insertion_code || "").trim();
+            if (insertionCode) selector.icode = insertionCode;
+            const partner = roles.partnerA.includes(chain) ? "a" : "b";
+            const opacity = selected !== "both" && selected !== partner ? 0.22 : 1;
+            viewer.setStyle(selector, { cartoon: { color, opacity } });
+          }
+        }
+      }
+    }
     viewer.render();
   }
-  byId("viewer-highlight")?.addEventListener("change", applyViewerHighlight);
-  byId("viewer-reset")?.addEventListener("click", () => { viewer?.zoomTo(); viewer?.render(); });
+
+  function resetViewerControls() {
+    for (const id of ["viewer-show-heavy", "viewer-show-light", "viewer-show-antigen", "viewer-show-cdr", "viewer-auto-rotate"]) {
+      const control = byId(id);
+      if (control) control.checked = true;
+    }
+    const highlight = byId("viewer-highlight");
+    if (highlight) highlight.value = "both";
+    updateCdrViewerAvailability();
+  }
+
+  function updateCdrViewerAvailability() {
+    const control = byId("viewer-show-cdr");
+    const roles = getViewerChainRoles(currentResult);
+    const hasCdrResidues = roles.domains.some(domain => (domain.cdr_regions || []).some(region => (region.residues || []).length));
+    if (control) {
+      control.disabled = !hasCdrResidues;
+      if (!hasCdrResidues) control.checked = false;
+    }
+    for (const [id, chainList] of [["viewer-show-heavy", roles.heavy], ["viewer-show-light", roles.light], ["viewer-show-antigen", roles.antigen]]) {
+      const chainControl = byId(id);
+      if (chainControl) chainControl.disabled = chainList.length === 0;
+    }
+    const hasRoles = roles.heavy.length || roles.light.length || roles.antigen.length;
+    text("viewer-note", hasCdrResidues
+      ? "Drag to rotate and scroll to zoom. Heavy, light, antigen, and exact annotated CDR residues are colored separately."
+      : hasRoles
+        ? "Drag to rotate and scroll to zoom. Chain colors use returned chain metadata; CDR highlighting is unavailable for this structure."
+        : "Drag to rotate and scroll to zoom. Chain roles or CDR annotations were not returned for this structure.");
+  }
+
+  function pauseViewerAutoRotation() {
+    if (!viewer || !viewerModel) return;
+    viewer.spin(false);
+    clearTimeout(viewerIdleTimer);
+    viewerIdleTimer = null;
+  }
+
+  function scheduleViewerAutoRotation() {
+    clearTimeout(viewerIdleTimer);
+    viewerIdleTimer = null;
+    if (!viewer || !viewerModel || byId("viewer-auto-rotate")?.checked === false) return;
+    viewerIdleTimer = setTimeout(() => {
+      viewerIdleTimer = null;
+      if (viewer && viewerModel && byId("viewer-auto-rotate")?.checked !== false) viewer.spin("y", 0.15, true);
+    }, 2200);
+  }
+
+  function bindViewerControls() {
+    if (viewerEventsBound) return;
+    viewerEventsBound = true;
+    ["viewer-highlight", "viewer-show-heavy", "viewer-show-light", "viewer-show-antigen", "viewer-show-cdr"]
+      .forEach(id => byId(id)?.addEventListener("change", applyViewerHighlight));
+    byId("viewer-auto-rotate")?.addEventListener("change", () => {
+      pauseViewerAutoRotation();
+      if (byId("viewer-auto-rotate")?.checked) scheduleViewerAutoRotation();
+    });
+    const stage = byId("viewer-stage");
+    ["pointerdown", "pointermove", "wheel", "touchstart", "touchmove"].forEach(eventName => stage?.addEventListener(eventName, () => {
+      pauseViewerAutoRotation();
+      scheduleViewerAutoRotation();
+    }, { passive: true }));
+    ["pointerup", "pointercancel", "touchend"].forEach(eventName => stage?.addEventListener(eventName, scheduleViewerAutoRotation, { passive: true }));
+    byId("viewer-reset")?.addEventListener("click", () => {
+      pauseViewerAutoRotation();
+      if (viewerInitialView) viewer?.setView(viewerInitialView);
+      else viewer?.zoomTo();
+      viewer?.render();
+      scheduleViewerAutoRotation();
+    });
+  }
+
   byId("viewer-fullscreen")?.addEventListener("click", async () => {
     const stage = byId("viewer-stage");
     if (!stage) return;

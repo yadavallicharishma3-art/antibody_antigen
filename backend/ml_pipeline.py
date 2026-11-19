@@ -57,13 +57,6 @@ def _metrics(y_true: np.ndarray, probabilities: np.ndarray) -> dict[str, Any]:
     auc = None
     if len(np.unique(y_true)) == 2:
         auc = float(roc_auc_score(y_true, probabilities))
-    print("accuracy": float(accuracy_score(y_true, predicted)),
-                "precision": float(precision_score(y_true, predicted, zero_division=0)),
-                "recall": float(recall_score(y_true, predicted, zero_division=0)),
-                "f1_score": float(f1_score(y_true, predicted, zero_division=0)),
-                "roc_auc": auc,
-                "confusion_matrix": confusion_matrix(y_true, predicted, labels=[0, 1]).tolist(),
-                "test_samples": int(len(y_true)))
     return {
         "accuracy": float(accuracy_score(y_true, predicted)),
         "precision": float(precision_score(y_true, predicted, zero_division=0)),

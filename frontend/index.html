@@ -9,9 +9,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/style.css?v=formatted-2026-11-17">
+  <link rel="stylesheet" href="/static/style.css?v=structure-viewer-controls-2026-11-19">
   <script src="https://3dmol.org/build/3Dmol-min.js" defer></script>
-  <script src="/static/script.js?v=beginner-examples-removed-2026-11-18" defer></script>
+  <script src="/static/script.js?v=structure-viewer-controls-2026-11-19" defer></script>
 </head>
 <body>
   <div class="app-shell">
@@ -136,11 +136,11 @@
           </section>
 
           <section class="subview" data-subview-panel="specialised-viewer" hidden>
-            <div class="page-intro"><span class="eyebrow">SPECIALISED MODE / STRUCTURE VIEWER</span><h1>Explore in 3D.</h1><p>Rotate and zoom the analyzed coordinates. Partner colors follow the chain groups returned by the backend; chain identity is not inferred beyond those groups.</p></div>
+            <div class="page-intro"><span class="eyebrow">SPECIALISED MODE / STRUCTURE VIEWER</span><h1>Explore in 3D.</h1><p>Rotate and zoom the analyzed coordinates. Chain colors follow the heavy/light domain annotations and partner chain assignments returned by the backend.</p></div>
             <article class="viewer-card content-card">
-              <div class="viewer-toolbar"><div class="viewer-legend"><span><i class="legend-dot partner-a-dot"></i>Partner A <b id="viewer-partner-a">—</b></span><span><i class="legend-dot partner-b-dot"></i>Partner B <b id="viewer-partner-b">—</b></span></div><div class="viewer-actions"><label class="viewer-select-label">Highlight<select id="viewer-highlight"><option value="both">Both partners</option><option value="a">Partner A</option><option value="b">Partner B</option></select></label><button class="icon-button" id="viewer-reset" type="button" title="Reset view">Reset</button><button class="icon-button" id="viewer-fullscreen" type="button">Fullscreen</button></div></div>
+              <div class="viewer-toolbar"><div class="viewer-legend"><span><i class="legend-dot heavy-chain-dot"></i>Heavy <b id="viewer-heavy-chains">—</b></span><span><i class="legend-dot light-chain-dot"></i>Light <b id="viewer-light-chains">—</b></span><span><i class="legend-dot antigen-chain-dot"></i>Antigen <b id="viewer-antigen-chains">—</b></span></div><div class="viewer-actions"><label class="viewer-select-label">Highlight<select id="viewer-highlight"><option value="both">Both partners</option><option value="a">Partner A</option><option value="b">Partner B</option></select></label><label class="viewer-toggle"><input id="viewer-show-heavy" type="checkbox" checked>Heavy</label><label class="viewer-toggle"><input id="viewer-show-light" type="checkbox" checked>Light</label><label class="viewer-toggle"><input id="viewer-show-antigen" type="checkbox" checked>Antigen</label><label class="viewer-toggle"><input id="viewer-show-cdr" type="checkbox" checked>CDRs</label><label class="viewer-toggle"><input id="viewer-auto-rotate" type="checkbox" checked>Rotate</label><button class="icon-button" id="viewer-reset" type="button" title="Reset camera">Reset</button><button class="icon-button" id="viewer-fullscreen" type="button">Fullscreen</button></div></div>
               <div class="viewer-stage" id="viewer-stage"><div id="structure-viewer" aria-label="Interactive 3D protein structure viewer"></div><div class="viewer-empty" id="viewer-message"><span class="viewer-mark">◌</span><strong>Structure viewer is waiting</strong><p>Run an analysis first. Uploaded files can be viewed during this browser session; PDB IDs can be reloaded from RCSB.</p></div></div>
-              <p class="viewer-note" id="viewer-note">CDR highlighting is unavailable because the current API does not return CDR residue ranges.</p>
+              <p class="viewer-note" id="viewer-note">Drag to rotate and scroll to zoom. Chain colors and CDR highlights use the returned structure annotations.</p>
             </article>
           </section>
 
@@ -156,7 +156,8 @@
 
           <section class="subview" data-subview-panel="specialised-chains" hidden>
             <div class="page-intro"><span class="eyebrow">SPECIALISED MODE / CHAIN DETAILS</span><h1>Inspect partner chains.</h1><p>The API returns chain identifiers and selected interface statistics for the predicted pair.</p></div>
-            <article class="table-card content-card"><div class="table-heading"><div><span class="card-index">PREDICTED PARTNER PAIR</span><h2 id="chain-table-title">No structure loaded</h2></div></div><div class="table-scroll"><table><thead><tr><th>Partner</th><th>Chain IDs</th><th>Interface residues</th><th>Side-chain contacts</th><th>Residue ranges</th></tr></thead><tbody id="chain-table-body"><tr><td colspan="5" class="table-empty">Run an analysis to populate chain metadata.</td></tr></tbody></table></div><p class="data-availability-note">Full chain sequences, total chain lengths, and biological heavy/light/antigen type labels are not returned by this API.</p></article>
+            <article class="table-card content-card"><div class="table-heading"><div><span class="card-index">PREDICTED PARTNER PAIR</span><h2 id="chain-table-title">No structure loaded</h2></div></div><div class="table-scroll"><table><thead><tr><th>Partner</th><th>Chain IDs</th><th>Interface residues</th><th>Side-chain contacts</th></tr></thead><tbody id="chain-table-body"><tr><td colspan="4" class="table-empty">Run an analysis to populate chain metadata.</td></tr></tbody></table></div><p class="data-availability-note">Full chain sequences, total chain lengths, and biological heavy/light/antigen type labels are not returned by this API.</p></article>
+            <article class="table-card content-card interface-residue-card"><div class="table-heading"><div><span class="card-index">INTERFACE RESIDUES</span><h2>Residues at the interface</h2></div></div><div class="table-scroll"><table><thead><tr><th>Heavy Chain Residues</th><th>Light Chain Residues</th><th>Antigen Chain Residues</th></tr></thead><tbody><tr><td id="heavy-interface-residues" class="interface-residue-cell">Run an analysis to populate interface residues.</td><td id="light-interface-residues" class="interface-residue-cell">Run an analysis to populate interface residues.</td><td id="antigen-interface-residues" class="interface-residue-cell">Run an analysis to populate interface residues.</td></tr></tbody></table></div></article>
           </section>
 
           <section class="subview" data-subview-panel="specialised-prediction" hidden>

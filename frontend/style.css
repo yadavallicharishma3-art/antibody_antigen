@@ -712,6 +712,11 @@ main {
   align-items: center;
   gap: 14px
 }
+.viewer-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px
+}
 .viewer-legend>span {
   display: flex;
   align-items: center;
@@ -735,6 +740,15 @@ main {
 .partner-b-dot {
   background: #59d3e2
 }
+.heavy-chain-dot {
+  background: #3987ff
+}
+.light-chain-dot {
+  background: #36c275
+}
+.antigen-chain-dot {
+  background: #ec64a9
+}
 .diagonal-dot {
   background: #526078
 }
@@ -749,6 +763,24 @@ main {
   border-radius: 7px;
   color: #dce6f6;
   padding: 7px
+}
+.viewer-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #b8c7da;
+  font-size: 10px;
+  white-space: nowrap;
+  cursor: pointer
+}
+.viewer-toggle input {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  accent-color: #8f7cf3
+}
+.viewer-toggle input:disabled {
+  cursor: not-allowed
 }
 .icon-button {
   border: 1px solid var(--line);
@@ -931,6 +963,35 @@ td {
 }
 .data-availability-note {
   margin-top: 14px
+}
+.interface-residue-card {
+  margin-top: 16px
+}
+.interface-residue-cell {
+  vertical-align: top;
+  min-width: 190px;
+  line-height: 1.7
+}
+.interface-residue-group + .interface-residue-group {
+  margin-top: 12px
+}
+.interface-residue-group>strong {
+  display: block;
+  color: #8ba0bd;
+  font: 500 9px 'DM Mono',monospace;
+  margin-bottom: 5px
+}
+.interface-residue-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px
+}
+.interface-residue-item {
+  white-space: nowrap
+}
+.interface-residue-item small {
+  color: #a78bfa;
+  font-size: 9px
 }
 .cdr-explainer {
   display: grid;
